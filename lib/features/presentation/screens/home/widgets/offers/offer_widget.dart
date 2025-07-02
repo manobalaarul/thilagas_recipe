@@ -1,16 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../../../../core/constants/app_colors.dart';
 import '../../../../../domain/entities/offers/offer_response_entity.dart';
-import '../../bloc/offer_bloc/offer_bloc.dart';
+import '../../../../bloc/offer_bloc/offer_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OfferWidget extends StatefulWidget {
-  final OfferState state;
   final OfferResponseEntity offers;
-  const OfferWidget({super.key, required this.state, required this.offers});
+  const OfferWidget({super.key, required this.offers});
 
   @override
   State<OfferWidget> createState() => _OfferWidgetState();
@@ -22,8 +19,6 @@ class _OfferWidgetState extends State<OfferWidget> {
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
-    final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-
     List<String> imageUrls = [
       widget.offers.offer.image1,
       widget.offers.offer.image2,

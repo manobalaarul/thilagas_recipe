@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
-import '../../../../../domain/usecases/offers/get_offer_usecase.dart';
-
-import '../../../../../domain/entities/offers/offer_response_entity.dart';
+import '../../../domain/usecases/offers/get_offer_usecase.dart';
+import '../../../domain/entities/offers/offer_response_entity.dart';
 
 part 'offer_state.dart';
 part 'offer_event.dart';

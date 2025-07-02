@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'features/presentation/screens/maintab/maintab.dart';
 import 'core/theme/bloc/theme_bloc.dart';
 import 'core/theme/dark_theme.dart';
 import 'core/theme/light_theme.dart';
 import 'di/di_module.dart';
 import 'app_bloc_provider.dart';
-import 'features/presentation/screens/home/home_page.dart';
 import 'features/utils/helper/app_observer.dart';
 import 'features/utils/helper/value_preferences.dart';
 
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
               theme: lightTheme,
               darkTheme: darkTheme,
               themeMode: state.themeMode,
-              home: const HomePage());
+              home: const MainTab());
         },
       ),
     );

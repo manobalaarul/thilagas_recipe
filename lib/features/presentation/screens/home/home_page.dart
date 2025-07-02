@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thilagas_recipe/features/common_widgets/custom_appbar.dart';
-import 'package:thilagas_recipe/features/presentation/screens/home/widgets/headings/topic_line.dart';
-import 'package:thilagas_recipe/features/presentation/screens/home/widgets/offers/offer_loader.dart';
-import 'bloc/offer_bloc/offer_bloc.dart';
+import '../../bloc/category_bloc/category_bloc.dart';
+import 'widgets/category/category_loader.dart';
+import 'widgets/category/category_widget.dart';
+import 'widgets/headings/topic_line.dart';
+import 'widgets/offers/offer_loader.dart';
+import '../../bloc/offer_bloc/offer_bloc.dart';
 import 'widgets/fields/search_field.dart';
 import 'widgets/offers/offer_widget.dart';
 
@@ -15,13 +17,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  _fetchOffers() {
+  _fetchDatas() {
     BlocProvider.of<OfferBloc>(context).add(GetOfferEvent());
+    BlocProvider.of<CategoryBloc>(context).add(GetCategoryEvent());
   }
 
   @override
   void initState() {
-    _fetchOffers();
+    _fetchDatas();
     super.initState();
   }
 
@@ -62,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                   return Center(child: Text(state.errorMsg!));
                 case OfferStatus.loaded:
                   final offers = state.offer;
-                  return OfferWidget(state: state, offers: offers!);
+                  return OfferWidget(offers: offers!);
               }
             }),
             SizedBox(
@@ -71,7 +74,22 @@ class _HomePageState extends State<HomePage> {
             TopicLine(
               title: "Categories",
               onTap: () {},
-            )
+            ),
+            SizedBox(
+              height: media.height * 0.01,
+            ),
+            BlocBuilder<CategoryBloc, CategoryState>(builder: (context, state) {
+              switch (state.status) {
+                case CategoryStatus.initial:
+                case CategoryStatus.loading:
+                  return const Center(child: CategoryLoader());
+                case CategoryStatus.error:
+                  return Center(child: Text(state.errorMsg!));
+                case CategoryStatus.loaded:
+                  final category = state.category!.category;
+                  return CategoryWidget(category: category);
+              }
+            }),
           ],
         ),
       ),
