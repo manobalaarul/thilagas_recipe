@@ -90,6 +90,16 @@ class _HomePageState extends State<HomePage> {
                   return CategoryWidget(category: category);
               }
             }),
+            SizedBox(
+              height: media.height * 0.01,
+            ),
+            TopicLine(
+              title: "New Arrivals",
+              onTap: () {},
+            ),
+            SizedBox(
+              height: media.height * 0.01,
+            ),
           ],
         ),
       ),
