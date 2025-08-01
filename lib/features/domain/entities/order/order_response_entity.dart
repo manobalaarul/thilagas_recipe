@@ -222,7 +222,6 @@ class ProductDetails {
 class VariantDetails {
     @JsonKey(name: "name")
     String name;
-
     VariantDetails({
         required this.name,
     });
