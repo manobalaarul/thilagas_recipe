@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
-import '../../model/product/product_model.dart';
+
 import '../../../../../core/constants/api_routes.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/network/dio_client.dart';
+import '../../model/product/product_model.dart';
 
 abstract class ProductRemoteDatasource {
   Future<ProductModel> getProduct(dynamic params);
@@ -15,7 +16,10 @@ class ProductRemoteDatasourceImpl implements ProductRemoteDatasource {
   @override
   Future<ProductModel> getProduct(params) async {
     try {
-      final response = await dioClient.get(path: ApiRoutes.getProduct);
+      final response = await dioClient.post(path: ApiRoutes.getProduct, data: {
+        "page": 1,
+        "limit": 8,
+      });
       print(response.data);
       final offers = ProductModel.fromJson(response.data);
       return offers;

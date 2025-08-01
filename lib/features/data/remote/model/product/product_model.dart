@@ -24,15 +24,16 @@ class ProductModel extends ProductResponseEntity {
         totalCount: json["totalCount"],
         totalPages: json["totalPages"],
         product:
-            List<Product>.from(json["product"].map((x) => Product.fromJson(x))),
+            List<Product>.from(json["data"].map((x) => Product.fromJson(x))),
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         "message": message,
         "error": error,
         "success": success,
         "totalCount": totalCount,
         "totalPages": totalPages,
-        "product": List<dynamic>.from(product.map((x) => x.toJson())),
+        "data": List<dynamic>.from(product.map((x) => x.toJson())),
       };
 }

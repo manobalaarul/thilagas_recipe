@@ -5,24 +5,24 @@ enum ProductStatus { initial, loading, loaded, error }
 
 class ProductState {
   final ProductStatus status;
-  final ProductResponseEntity? offer;
+  final ProductResponseEntity? products;
   final String? errorMsg;
   final String? successMsg;
 
   ProductState(
       {this.status = ProductStatus.initial,
-      this.offer,
+      this.products,
       this.errorMsg,
       this.successMsg});
 
   ProductState copyWith(
       {ProductStatus? status,
-      final ProductResponseEntity? offer,
+      final ProductResponseEntity? products,
       String? errorMsg,
       String? successMsg}) {
     return ProductState(
         status: status ?? this.status,
-        offer: offer ?? this.offer,
+        products: products ?? this.products,
         errorMsg: errorMsg ?? this.errorMsg,
         successMsg: successMsg ?? this.successMsg);
   }

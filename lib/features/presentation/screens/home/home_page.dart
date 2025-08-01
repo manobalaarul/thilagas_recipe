@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:thilagas_recipe/features/presentation/screens/home/widgets/product/product_loader.dart';
+
+import '../../../common_widgets/headlines/topicline.dart';
 import '../../bloc/category_bloc/category_bloc.dart';
+import '../../bloc/offer_bloc/offer_bloc.dart';
+import '../../bloc/product_bloc/product_bloc.dart';
 import 'widgets/category/category_loader.dart';
 import 'widgets/category/category_widget.dart';
-import 'widgets/headings/topic_line.dart';
-import 'widgets/offers/offer_loader.dart';
-import '../../bloc/offer_bloc/offer_bloc.dart';
 import 'widgets/fields/search_field.dart';
+import 'widgets/offers/offer_loader.dart';
 import 'widgets/offers/offer_widget.dart';
+import 'widgets/product/new_arrivals.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   _fetchDatas() {
     BlocProvider.of<OfferBloc>(context).add(GetOfferEvent());
     BlocProvider.of<CategoryBloc>(context).add(GetCategoryEvent());
+    BlocProvider.of<ProductBloc>(context).add(GetProductEvent());
   }
 
   @override
@@ -41,7 +46,7 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
+                SizedBox(
                     width: media.width / 3,
                     child: isDarkTheme
                         ? Image.asset("assets/images/dark_logo.png")
@@ -100,6 +105,30 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: media.height * 0.01,
             ),
+            BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
+              switch (state.status) {
+                case ProductStatus.initial:
+                case ProductStatus.loading:
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 6,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.75,
+                    ),
+                    itemBuilder: (context, index) => Container(
+                        margin: const EdgeInsets.all(3),
+                        child: const ProductLoader()),
+                  );
+                case ProductStatus.error:
+                  return Center(child: Text(state.errorMsg!));
+                case ProductStatus.loaded:
+                  final products = state.products!.product;
+                  return NewArrivals(products: products);
+              }
+            }),
           ],
         ),
       ),

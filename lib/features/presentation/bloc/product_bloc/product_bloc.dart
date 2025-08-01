@@ -21,8 +21,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     result.fold((failure) {
       emit(state.copyWith(
           status: ProductStatus.error, errorMsg: failure.message));
-    }, (loadedOffer) {
-      emit(state.copyWith(status: ProductStatus.loaded, offer: loadedOffer));
+    }, (loadedProducts) {
+      emit(state.copyWith(status: ProductStatus.loaded, products: loadedProducts));
     });
   }
 }
