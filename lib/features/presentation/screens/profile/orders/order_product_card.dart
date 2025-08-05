@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../domain/entities/order/order_response_entity.dart';
 import '../../../utils/display_in_rupees.dart';
 import '../../../utils/path_to_url.dart';
 
 class OrderProductCard extends StatelessWidget {
-  final OrderModel item;
+  final Order item;
   const OrderProductCard({super.key, required this.item});
 
   @override

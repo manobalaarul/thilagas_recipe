@@ -1,33 +1,31 @@
 import 'dart:convert';
+import '../../../../domain/entities/order/order_response_entity.dart';
 
-OrderModel orderModelFromJson(String str) => OrderModel.fromJson(json.decode(str));
+OrderModel orderModelFromJson(String str) =>
+    OrderModel.fromJson(json.decode(str));
 
 String orderModelToJson(OrderModel data) => json.encode(data.toJson());
 
-class OrderModel {
-    String message;
-    List<Datum> data;
-    bool error;
-    bool success;
+class OrderModel extends OrderResponseEntity {
+  OrderModel({
+    required super.message,
+    required super.order,
+    required super.error,
+    required super.success,
+  });
 
-    OrderModel({
-        required this.message,
-        required this.data,
-        required this.error,
-        required this.success,
-    });
-
-    factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
+  factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         message: json["message"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        order: List<Order>.from(json["data"].map((x) => Order.fromJson(x))),
         error: json["error"],
         success: json["success"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  @override
+  Map<String, dynamic> toJson() => {
         "message": message,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(order.map((x) => x.toJson())),
         "error": error,
         "success": success,
-    };
+      };
 }

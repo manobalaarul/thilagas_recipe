@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'features/presentation/screens/maintab/maintab.dart';
+import 'package:get/get.dart';
+
+import 'app_bloc_provider.dart';
 import 'core/theme/bloc/theme_bloc.dart';
 import 'core/theme/dark_theme.dart';
 import 'core/theme/light_theme.dart';
 import 'di/di_module.dart';
-import 'app_bloc_provider.dart';
+import 'features/presentation/screens/maintab/maintab.dart';
 import 'features/utils/helper/app_observer.dart';
 import 'features/utils/helper/value_preferences.dart';
 
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
       providers: AppBlocProvider.providers,
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {
-          return MaterialApp(
+          return GetMaterialApp(
               title: 'Thilagas Recipe',
               debugShowCheckedModeBanner: false,
               theme: lightTheme,

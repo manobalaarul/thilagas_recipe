@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'signup_page.dart';
+
 import '../../../../core/constants/app_colors.dart';
 import '../../../common_widgets/buttons/long_btn.dart';
 import '../../../common_widgets/textfield/apptextformfield.dart';
+import '../../bloc/auth_bloc/auth_bloc.dart';
 import 'otp_verify_page.dart';
 
 class Loginpage extends StatefulWidget {
@@ -15,38 +21,30 @@ class Loginpage extends StatefulWidget {
 class _LoginpageState extends State<Loginpage> {
   final _formKey = GlobalKey<FormState>();
   bool passvisible = true;
-  bool loading = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void loginFunc() async {
-    setState(() {
-      loading = true;
-    });
-
+  void loginFunc() {
     if (_formKey.currentState!.validate()) {
-      // try {
-      //   Map<String, dynamic>? response = await authController.loginController(
-      //       emailController.text, passwordController.text);
-      //   if (response != null && response["success"] == true) {
-      //     print("Login successful: ${response["message"]}");
-      //     DependencyInjection.init(); // Initialize dependencies
-      //     Get.offAll(() => SplashScreen());
-      //   } else {
-      //     print("Signup failed: ${response?["message"] ?? "Unknown error"}");
-      //   }
-      // } catch (e) {
-      //   print("Error: $e");
-      // } finally {
-      //   setState(() {
-      //     loading = false;
-      //   });
-      // }
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => Center(
+          child: LoadingAnimationWidget.fourRotatingDots(
+            color: Colors.white,
+            size: 40,
+          ),
+        ),
+      );
+
+      BlocProvider.of<AuthBloc>(context).add(
+        LoginEvent(
+          email: emailController.text.trim(),
+          password: passwordController.text,
+        ),
+      );
     } else {
-      print("Form is invalid");
-      setState(() {
-        loading = false;
-      });
+      debugPrint("Form is invalid");
     }
   }
 
@@ -59,7 +57,10 @@ class _LoginpageState extends State<Loginpage> {
                     email: emailController.text,
                   )));
     } else {
-      // Get.snackbar("Error", 'Enter email id to continue');
+      Fluttertoast.showToast(
+        msg: "Enter email id to continue",
+        toastLength: Toast.LENGTH_SHORT,
+      );
     }
   }
 
@@ -85,127 +86,159 @@ class _LoginpageState extends State<Loginpage> {
                     height: media.height,
                     fit: BoxFit.fill,
                   ),
-                  Form(
-                    key: _formKey,
-                    autovalidateMode: AutovalidateMode.onUnfocus,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: media.height / 2.3,
-                          ),
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Login',
-                                  style: TextStyle(
-                                      color: isDarkTheme
-                                          ? AppDarkColor.primaryText
-                                          : AppLightColor.primaryText,
-                                      fontSize: 50,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'Good to see you back! ❤',
-                                  style: TextStyle(
-                                    color: isDarkTheme
-                                        ? AppDarkColor.primaryText
-                                        : AppLightColor.primaryText,
-                                    fontSize: 20,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: media.height / 20,
-                          ),
-                          AppTextFormField(
-                            hintText: "Email",
-                            controller: emailController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(
-                            height: media.height / 50,
-                          ),
-                          AppTextFormField(
-                            hintText: "Password",
-                            controller: passwordController,
-                            obscureText: passvisible,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your password';
-                              }
-                              return null;
-                            },
-                            right: IconButton(
-                              icon: Icon(
-                                passvisible
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                  BlocConsumer<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state.status == AuthStatus.loaded) {
+                        if (Navigator.canPop(context)) {
+                          Navigator.pop(context); // Close loading dialog
+                        }
+
+                        // Show success toast
+                        Fluttertoast.showToast(
+                          msg: state.successMsg ?? "Login Successful",
+                          toastLength: Toast.LENGTH_LONG,
+                        );
+
+                        // Navigate to home screen or wherever you want after login
+                        // You can replace this with your desired navigation
+                        // Get.offAll(() => SplashScreen());
+                        
+                      } else if (state.status == AuthStatus.error) {
+                        if (Navigator.canPop(context)) {
+                          Navigator.pop(context); // Close dialog
+                        }
+                        Fluttertoast.showToast(
+                          msg: state.errorMsg ??
+                              "An error occurred during login",
+                          toastLength: Toast.LENGTH_LONG,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      return Form(
+                        key: _formKey,
+                        autovalidateMode: AutovalidateMode.onUnfocus,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: media.height / 2.3,
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  passvisible = !passvisible;
-                                });
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: media.height / 50,
-                          ),
-                          LongBtn(
-                              onPressed: () {
-                                loginFunc();
-                              },
-                              title: "Login",
-                              fontSize: 20),
-                          Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                    onPressed: () {
-                                      navigateOtp();
-                                    },
-                                    child: Text(
-                                      'Forgot Password ?',
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Login',
                                       style: TextStyle(
-                                        fontSize: 18,
-                                        color: AppLightColor.primaryText,
+                                          color: isDarkTheme
+                                              ? AppDarkColor.primaryText
+                                              : AppLightColor.primaryText,
+                                          fontSize: 50,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      'Good to see you back! ❤',
+                                      style: TextStyle(
+                                        color: isDarkTheme
+                                            ? AppDarkColor.primaryText
+                                            : AppLightColor.primaryText,
+                                        fontSize: 20,
                                       ),
-                                    )),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: media.height / 20,
+                              ),
+                              AppTextFormField(
+                                hintText: "Email",
+                                controller: emailController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your email';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: media.height / 50,
+                              ),
+                              AppTextFormField(
+                                hintText: "Password",
+                                controller: passwordController,
+                                obscureText: passvisible,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your password';
+                                  }
+                                  return null;
+                                },
+                                right: IconButton(
+                                  icon: Icon(
+                                    passvisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      passvisible = !passvisible;
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: media.height / 50,
+                              ),
+                              LongBtn(
+                                  onPressed: loginFunc,
+                                  title: "Login",
+                                  fontSize: 20),
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                        onPressed: () {
+                                          navigateOtp();
+                                        },
+                                        child: Text(
+                                          'Forgot Password ?',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: AppLightColor.primaryText,
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text('Don\'t have an account ?'),
+                                    TextButton(
+                                        onPressed: () {
+                                          Get.to(const SignupPage());
+                                        },
+                                        child: const Text('Register Now'))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
             ),
           ),
         ),
-        if (loading)
-          const Opacity(
-            opacity: 0.8,
-            child: ModalBarrier(dismissible: false, color: Colors.black),
-          ),
-        if (loading)
-          Center(
-            child: LoadingAnimationWidget.fourRotatingDots(
-                color: Colors.white, size: 40),
-          ),
       ],
     );
   }

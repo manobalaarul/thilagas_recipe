@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../../../common_widgets/appbar/custom_appbar.dart';
 import '../../../common_widgets/profile_widget/profile_option.dart';
+import '../auth/login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -25,10 +28,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   // await Future.wait([globalController.fetchCompanyDetails()]);
                 },
                 child: ListView(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   children: [
-                    CustomAppBar(title: 'Profile'),
-                    SizedBox(
+                    const CustomAppBar(title: 'Profile'),
+                    const SizedBox(
                       height: 10,
                     ),
                     ProfileOption(
@@ -53,17 +56,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                     ),
                     ProfileOption(
-                      icon: Icons.logout,
-                      title: 'Logout',
+                      icon: Icons.login,
+                      title: 'Login / Sign up',
                       onTap: () {
-                        // authController.logoutController();
-                        // Get.offAll(WelcomePage());
+                        Get.to(const Loginpage());
                       },
                     ),
                   ],
                 ),
               ),
-              Positioned(
+              const Positioned(
                   bottom: 20,
                   left: 10,
                   right: 10,

@@ -9,8 +9,8 @@ part of 'order_response_entity.dart';
 OrderResponseEntity _$OrderResponseEntityFromJson(Map<String, dynamic> json) =>
     OrderResponseEntity(
       message: json['message'] as String,
-      data: (json['data'] as List<dynamic>)
-          .map((e) => Datum.fromJson(e as Map<String, dynamic>))
+      order: (json['order'] as List<dynamic>)
+          .map((e) => Order.fromJson(e as Map<String, dynamic>))
           .toList(),
       error: json['error'] as bool,
       success: json['success'] as bool,
@@ -20,14 +20,14 @@ Map<String, dynamic> _$OrderResponseEntityToJson(
         OrderResponseEntity instance) =>
     <String, dynamic>{
       'message': instance.message,
-      'data': instance.data,
+      'order': instance.order,
       'error': instance.error,
       'success': instance.success,
     };
 
-Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
+Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       id: json['_id'] as String,
-      userId: json['userId'] as String,
+      userId: UserId.fromJson(json['userId'] as Map<String, dynamic>),
       orderId: json['orderId'] as String,
       products: (json['products'] as List<dynamic>)
           .map((e) => Product.fromJson(e as Map<String, dynamic>))
@@ -51,7 +51,7 @@ Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
       v: (json['__v'] as num).toInt(),
     );
 
-Map<String, dynamic> _$DatumToJson(Datum instance) => <String, dynamic>{
+Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       '_id': instance.id,
       'userId': instance.userId,
       'orderId': instance.orderId,
@@ -162,4 +162,53 @@ VariantDetails _$VariantDetailsFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$VariantDetailsToJson(VariantDetails instance) =>
     <String, dynamic>{
       'name': instance.name,
+    };
+
+UserId _$UserIdFromJson(Map<String, dynamic> json) => UserId(
+      id: json['_id'] as String,
+      name: json['name'] as String,
+      email: json['email'] as String,
+      password: json['password'] as String,
+      avatar: json['avatar'] as String,
+      mobile: (json['mobile'] as num).toInt(),
+      refreshToken: json['refresh_token'] as String,
+      verifyEmail: json['verify_email'] as bool,
+      lastLoginDate: DateTime.parse(json['last_login_date'] as String),
+      status: json['status'] as String,
+      addressDetails: (json['address_details'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      shoppingCart: (json['shopping_cart'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      wishlist:
+          (json['wishlist'] as List<dynamic>).map((e) => e as String).toList(),
+      orderHistory: json['order_history'] as List<dynamic>,
+      role: json['role'] as String,
+      v: (json['__v'] as num).toInt(),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      blogs: (json['blogs'] as List<dynamic>).map((e) => e as String).toList(),
+      gstNo: json['gstNo'] as String,
+    );
+
+Map<String, dynamic> _$UserIdToJson(UserId instance) => <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      'email': instance.email,
+      'password': instance.password,
+      'avatar': instance.avatar,
+      'mobile': instance.mobile,
+      'refresh_token': instance.refreshToken,
+      'verify_email': instance.verifyEmail,
+      'last_login_date': instance.lastLoginDate.toIso8601String(),
+      'status': instance.status,
+      'address_details': instance.addressDetails,
+      'shopping_cart': instance.shoppingCart,
+      'wishlist': instance.wishlist,
+      'order_history': instance.orderHistory,
+      'role': instance.role,
+      '__v': instance.v,
+      'updatedAt': instance.updatedAt.toIso8601String(),
+      'blogs': instance.blogs,
+      'gstNo': instance.gstNo,
     };

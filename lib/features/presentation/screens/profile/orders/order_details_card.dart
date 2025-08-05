@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../domain/entities/order/order_response_entity.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../common_widgets/buttons/long_btn.dart';
@@ -6,7 +7,7 @@ import '../../../utils/display_in_rupees.dart';
 import '../../../utils/text_date.dart';
 
 class OrderDetailsCard extends StatelessWidget {
-  final OrderModel item;
+  final Order item;
   const OrderDetailsCard({super.key, required this.item});
 
   Future<void> openURL(String orderId) async {

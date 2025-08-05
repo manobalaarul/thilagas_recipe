@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../home/home_page.dart';
+import '../profile/profile_page.dart';
 
 class MainTab extends StatefulWidget {
   const MainTab({super.key});
@@ -16,10 +17,10 @@ class _MainTabState extends State<MainTab> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    HomePage(),
-    HomePage(),
-    HomePage(),
-    HomePage(),
+    const HomePage(),
+    const HomePage(),
+    const HomePage(),
+    const ProfilePage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -104,16 +105,16 @@ class _MainTabState extends State<MainTab> {
     showDialog(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: Text("Exit App"),
-        content: Text("Are you sure you want to exit?"),
+        title: const Text("Exit App"),
+        content: const Text("Are you sure you want to exit?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text("Cancel"),
+            child: const Text("Cancel"),
           ),
           TextButton(
             onPressed: () => {SystemNavigator.pop()}, // Close the app
-            child: Text("Exit"),
+            child: const Text("Exit"),
           ),
         ],
       ),

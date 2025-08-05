@@ -15,8 +15,8 @@ String orderResponseEntityToJson(OrderResponseEntity data) => json.encode(data.t
 class OrderResponseEntity {
     @JsonKey(name: "message")
     String message;
-    @JsonKey(name: "data")
-    List<Datum> data;
+    @JsonKey(name: "order")
+    List<Order> order;
     @JsonKey(name: "error")
     bool error;
     @JsonKey(name: "success")
@@ -24,7 +24,7 @@ class OrderResponseEntity {
 
     OrderResponseEntity({
         required this.message,
-        required this.data,
+        required this.order,
         required this.error,
         required this.success,
     });
@@ -35,11 +35,11 @@ class OrderResponseEntity {
 }
 
 @JsonSerializable()
-class Datum {
+class Order {
     @JsonKey(name: "_id")
     String id;
     @JsonKey(name: "userId")
-    String userId;
+    UserId userId;
     @JsonKey(name: "orderId")
     String orderId;
     @JsonKey(name: "products")
@@ -73,7 +73,7 @@ class Datum {
     @JsonKey(name: "__v")
     int v;
 
-    Datum({
+    Order({
         required this.id,
         required this.userId,
         required this.orderId,
@@ -94,9 +94,9 @@ class Datum {
         required this.v,
     });
 
-    factory Datum.fromJson(Map<String, dynamic> json) => _$DatumFromJson(json);
+    factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
-    Map<String, dynamic> toJson() => _$DatumToJson(this);
+    Map<String, dynamic> toJson() => _$OrderToJson(this);
 }
 
 @JsonSerializable()
@@ -222,6 +222,7 @@ class ProductDetails {
 class VariantDetails {
     @JsonKey(name: "name")
     String name;
+
     VariantDetails({
         required this.name,
     });
@@ -230,3 +231,72 @@ class VariantDetails {
 
     Map<String, dynamic> toJson() => _$VariantDetailsToJson(this);
 }
+
+@JsonSerializable()
+class UserId {
+    @JsonKey(name: "_id")
+    String id;
+    @JsonKey(name: "name")
+    String name;
+    @JsonKey(name: "email")
+    String email;
+    @JsonKey(name: "password")
+    String password;
+    @JsonKey(name: "avatar")
+    String avatar;
+    @JsonKey(name: "mobile")
+    int mobile;
+    @JsonKey(name: "refresh_token")
+    String refreshToken;
+    @JsonKey(name: "verify_email")
+    bool verifyEmail;
+    @JsonKey(name: "last_login_date")
+    DateTime lastLoginDate;
+    @JsonKey(name: "status")
+    String status;
+    @JsonKey(name: "address_details")
+    List<String> addressDetails;
+    @JsonKey(name: "shopping_cart")
+    List<String> shoppingCart;
+    @JsonKey(name: "wishlist")
+    List<String> wishlist;
+    @JsonKey(name: "order_history")
+    List<dynamic> orderHistory;
+    @JsonKey(name: "role")
+    String role;
+    @JsonKey(name: "__v")
+    int v;
+    @JsonKey(name: "updatedAt")
+    DateTime updatedAt;
+    @JsonKey(name: "blogs")
+    List<String> blogs;
+    @JsonKey(name: "gstNo")
+    String gstNo;
+
+    UserId({
+        required this.id,
+        required this.name,
+        required this.email,
+        required this.password,
+        required this.avatar,
+        required this.mobile,
+        required this.refreshToken,
+        required this.verifyEmail,
+        required this.lastLoginDate,
+        required this.status,
+        required this.addressDetails,
+        required this.shoppingCart,
+        required this.wishlist,
+        required this.orderHistory,
+        required this.role,
+        required this.v,
+        required this.updatedAt,
+        required this.blogs,
+        required this.gstNo,
+    });
+
+    factory UserId.fromJson(Map<String, dynamic> json) => _$UserIdFromJson(json);
+
+    Map<String, dynamic> toJson() => _$UserIdToJson(this);
+}
+

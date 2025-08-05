@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../common_widgets/appbar/custom_appbar.dart';
+import '../../../../domain/entities/order/order_response_entity.dart';
 import 'order_details_card.dart';
 import 'order_product_card.dart';
 import 'order_timeline.dart';
 
 class OrderDetailsPage extends StatefulWidget {
-  final OrderModel item;
+  final Order item;
   const OrderDetailsPage({super.key, required this.item});
 
   @override

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
+import '../../../../domain/entities/order/order_response_entity.dart';
+
 class OrderTimeline extends StatelessWidget {
-  final OrderModel item;
+  final Order item;
 
   const OrderTimeline({super.key, required this.item});
 
@@ -24,7 +26,7 @@ class OrderTimeline extends StatelessWidget {
                 iconStyle:
                     IconStyle(iconData: Icons.check, color: Colors.white),
               ),
-              beforeLineStyle: LineStyle(
+              beforeLineStyle: const LineStyle(
                 color: Colors.green,
                 thickness: 3,
               ),
@@ -33,12 +35,13 @@ class OrderTimeline extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(status['title'],
-                        style: TextStyle(
+                    Text(status.title,
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 4),
-                    Text(status['description'],
-                        style: TextStyle(fontSize: 14, color: Colors.grey)),
+                    const SizedBox(height: 4),
+                    Text(status.description,
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey)),
                   ],
                 ),
               ),
