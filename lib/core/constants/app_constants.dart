@@ -8,3 +8,11 @@ class ApiConstants {
   static const String connectionError = 'Connection Error';
   static const String invalidResponse = 'Invalid Response';
 }
+
+class AppConstants {
+  //Shared Preferences
+  static const String accessToken = "";
+  static const String refreshToken = "";
+  static const String name = "";
+  static const String email = "";
+}

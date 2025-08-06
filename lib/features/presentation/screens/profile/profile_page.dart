@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thilagas_recipe/core/constants/app_constants.dart';
+import 'package:thilagas_recipe/features/presentation/screens/maintab/maintab.dart';
+import 'package:thilagas_recipe/features/utils/helper/value_preferences.dart';
 
 import '../../../common_widgets/appbar/custom_appbar.dart';
 import '../../../common_widgets/profile_widget/profile_option.dart';
@@ -13,6 +16,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    print(Prefs.getString(AppConstants.accessToken));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,9 +67,19 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     ProfileOption(
                       icon: Icons.login,
-                      title: 'Login / Sign up',
+                      title: Prefs.getString(AppConstants.accessToken) == ""
+                          ? "Login / Sign up"
+                          : "Logout",
                       onTap: () {
-                        Get.to(const Loginpage());
+                        if (Prefs.getString(AppConstants.accessToken) == "") {
+                          Get.to(const Loginpage());
+                        } else {
+                          Prefs.setString(AppConstants.accessToken, "");
+                          Prefs.setString(AppConstants.refreshToken, "");
+                          Prefs.setString(AppConstants.name, "");
+                          Prefs.setString(AppConstants.email, "");
+                          Get.offAll(const MainTab());
+                        }
                       },
                     ),
                   ],

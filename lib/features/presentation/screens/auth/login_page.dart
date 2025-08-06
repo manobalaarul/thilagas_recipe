@@ -3,13 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'signup_page.dart';
+import 'package:thilagas_recipe/features/presentation/screens/maintab/maintab.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../common_widgets/buttons/long_btn.dart';
 import '../../../common_widgets/textfield/apptextformfield.dart';
-import '../../bloc/auth_bloc/auth_bloc.dart';
+import '../../bloc/login/login_bloc.dart';
 import 'otp_verify_page.dart';
+import 'signup_page.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -37,8 +38,8 @@ class _LoginpageState extends State<Loginpage> {
         ),
       );
 
-      BlocProvider.of<AuthBloc>(context).add(
-        LoginEvent(
+      BlocProvider.of<LoginBloc>(context).add(
+        LoginActionEvent(
           email: emailController.text.trim(),
           password: passwordController.text,
         ),
@@ -86,9 +87,9 @@ class _LoginpageState extends State<Loginpage> {
                     height: media.height,
                     fit: BoxFit.fill,
                   ),
-                  BlocConsumer<AuthBloc, AuthState>(
+                  BlocConsumer<LoginBloc, LoginState>(
                     listener: (context, state) {
-                      if (state.status == AuthStatus.loaded) {
+                      if (state.status == LoginStatus.loaded) {
                         if (Navigator.canPop(context)) {
                           Navigator.pop(context); // Close loading dialog
                         }
@@ -98,12 +99,8 @@ class _LoginpageState extends State<Loginpage> {
                           msg: state.successMsg ?? "Login Successful",
                           toastLength: Toast.LENGTH_LONG,
                         );
-
-                        // Navigate to home screen or wherever you want after login
-                        // You can replace this with your desired navigation
-                        // Get.offAll(() => SplashScreen());
-                        
-                      } else if (state.status == AuthStatus.error) {
+                        Get.offAll(() => const MainTab());
+                      } else if (state.status == LoginStatus.error) {
                         if (Navigator.canPop(context)) {
                           Navigator.pop(context); // Close dialog
                         }

@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+
+import '../../features/utils/helper/value_preferences.dart';
 import '../constants/app_constants.dart';
 import '../errors/exceptions.dart';
 
@@ -18,10 +20,15 @@ class DioClient {
 
     dio = Dio(baseOptions);
 
-    // dio.interceptors.add(LogInterceptor());
+    dio.interceptors.add(LogInterceptor());
 
     dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
+      onRequest: (options, handler) async {
+        // Add authentication token from SharedPreferences
+        String? token = Prefs.getString(AppConstants.accessToken);
+        if (token != null) {
+          options.headers["Authorization"] = "Bearer $token";
+        }
         return handler.next(options);
       },
       onResponse: (response, handler) {
@@ -38,6 +45,7 @@ class DioClient {
         return handler.next(response);
       },
       onError: (DioException e, handler) {
+        print("API Error: ${e.response?.data}");
         return handler.next(e);
       },
     ));

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/login/login_bloc.dart';
 
 import '../core/network/dio_client.dart';
 import '../features/data/remote/datasource/auth/auth_remote_datasource.dart';
@@ -31,10 +32,8 @@ class DiModule {
     sl.registerFactory(() => OfferBloc(sl()));
     sl.registerFactory(() => CategoryBloc(sl()));
     sl.registerFactory(() => ProductBloc(sl()));
-    sl.registerFactory(() => AuthBloc(
-          sl<RegisterUsecase>(),
-          sl<LoginUsecase>(),
-        ));
+    sl.registerFactory(() => AuthBloc(sl<RegisterUsecase>()));
+    sl.registerFactory(() => LoginBloc(sl<LoginUsecase>()));
 
     //Usecase
     sl.registerLazySingleton(() => GetOfferUsecase(sl()));
