@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../cart/cart_page.dart';
 import '../home/home_page.dart';
 import '../profile/profile_page.dart';
 
@@ -19,7 +20,7 @@ class _MainTabState extends State<MainTab> {
   final List<Widget> _pages = [
     const HomePage(),
     const HomePage(),
-    const HomePage(),
+    const CartPage(),
     const ProfilePage(),
   ];
   @override

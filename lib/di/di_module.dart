@@ -1,4 +1,9 @@
 import 'package:get_it/get_it.dart';
+import 'package:thilagas_recipe/features/data/remote/datasource/cart/cart_remote_datasource.dart';
+import 'package:thilagas_recipe/features/data/repository/cart/cart_repository_impl.dart';
+import 'package:thilagas_recipe/features/domain/repository/cart/cart_repository.dart';
+import 'package:thilagas_recipe/features/domain/usecases/cart/get_cart_usecase.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/cart_bloc/cart_bloc.dart';
 import 'package:thilagas_recipe/features/presentation/bloc/login/login_bloc.dart';
 
 import '../core/network/dio_client.dart';
@@ -34,6 +39,7 @@ class DiModule {
     sl.registerFactory(() => ProductBloc(sl()));
     sl.registerFactory(() => AuthBloc(sl<RegisterUsecase>()));
     sl.registerFactory(() => LoginBloc(sl<LoginUsecase>()));
+    sl.registerFactory(() => CartBloc(sl<GetCartUsecase>()));
 
     //Usecase
     sl.registerLazySingleton(() => GetOfferUsecase(sl()));
@@ -41,6 +47,7 @@ class DiModule {
     sl.registerLazySingleton(() => GetProductUsecase(sl()));
     sl.registerLazySingleton(() => RegisterUsecase(sl()));
     sl.registerLazySingleton(() => LoginUsecase(sl()));
+    sl.registerLazySingleton(() => GetCartUsecase(sl()));
 
     //Repository
     sl.registerLazySingleton<OfferRepository>(
@@ -51,6 +58,8 @@ class DiModule {
         () => ProductRepositoryImpl(productRemoteDatasource: sl()));
     sl.registerLazySingleton<AuthRepository>(
         () => AuthRepositoryImpl(authRemoteDatasource: sl()));
+    sl.registerLazySingleton<CartRepository>(
+        () => CartRepositoryImpl(cartRemoteDatasource: sl()));
 
     //Datasource
     sl.registerLazySingleton<OffersRemoteDatasource>(
@@ -61,6 +70,8 @@ class DiModule {
         () => ProductRemoteDatasourceImpl(dioClient: sl()));
     sl.registerLazySingleton<AuthRemoteDatasource>(
         () => AuthRemoteDatasourceImpl(dioClient: sl()));
+    sl.registerLazySingleton<CartRemoteDatasourceImpl>(
+        () => CartRemoteDatasourceImpl(dioClient: sl()));
 
     //Core
     sl.registerLazySingleton(() => DioClient());

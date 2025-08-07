@@ -5,4 +5,5 @@ class ApiRoutes {
   static const String getProduct = 'product/get_product';
   static const String register = 'user/register';
   static const String login = 'user/login';
+  static const String cartItems = 'cart/get_cart_items';
 }

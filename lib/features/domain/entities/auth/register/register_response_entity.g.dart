@@ -12,7 +12,7 @@ RegisterResponseEntity _$RegisterResponseEntityFromJson(
       message: json['message'] as String,
       error: json['error'] as bool,
       success: json['success'] as bool,
-      user: User.fromJson(json['User'] as Map<String, dynamic>),
+      user: User.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RegisterResponseEntityToJson(
@@ -21,7 +21,7 @@ Map<String, dynamic> _$RegisterResponseEntityToJson(
       'message': instance.message,
       'error': instance.error,
       'success': instance.success,
-      'User': instance.user,
+      'data': instance.user,
     };
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
