@@ -11,8 +11,8 @@ class ApiConstants {
 
 class AppConstants {
   //Shared Preferences
-  static const String accessToken = "";
-  static const String refreshToken = "";
-  static const String name = "";
-  static const String email = "";
+  static const String accessToken = "accessToken";
+  static const String refreshToken = "refreshToken";
+  static const String name = "userName";
+  static const String email = "userEmail";
 }

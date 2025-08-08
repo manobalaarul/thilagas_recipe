@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thilagas_recipe/features/common_widgets/appbar/custom_appbar.dart';
-import 'package:thilagas_recipe/features/common_widgets/cart/cart_card.dart';
-import 'package:thilagas_recipe/features/presentation/bloc/cart_bloc/cart_bloc.dart';
 
-import '../home/widgets/product/product_loader.dart';
+import '../../../common_widgets/appbar/custom_appbar.dart';
+import '../../../common_widgets/cart/cart_card.dart';
+import '../../bloc/cart_bloc/cart_bloc.dart';
+import 'widgets/cart_loader.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -14,6 +14,14 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    BlocProvider.of<CartBloc>(context).add(GetCartEvent());
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,23 +34,26 @@ class _CartPageState extends State<CartPage> {
             switch (state.status) {
               case CartStatus.initial:
               case CartStatus.loading:
-                return GridView.builder(
+                return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 6,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemBuilder: (context, index) => Container(
-                      margin: const EdgeInsets.all(3),
-                      child: const ProductLoader()),
+                  itemCount: 7,
+                  itemBuilder: (context, index) {
+                    return const CartLoader();
+                  },
                 );
               case CartStatus.error:
                 return Center(child: Text(state.errorMsg!));
               case CartStatus.loaded:
                 final carts = state.cart!.cart;
-                return CartCard(item: carts);
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: carts.length,
+                  itemBuilder: (context, index) {
+                    return CartCard(item: carts[index]);
+                  },
+                );
             }
           }),
         ],

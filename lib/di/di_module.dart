@@ -70,7 +70,7 @@ class DiModule {
         () => ProductRemoteDatasourceImpl(dioClient: sl()));
     sl.registerLazySingleton<AuthRemoteDatasource>(
         () => AuthRemoteDatasourceImpl(dioClient: sl()));
-    sl.registerLazySingleton<CartRemoteDatasourceImpl>(
+    sl.registerLazySingleton<CartRemoteDatasource>(
         () => CartRemoteDatasourceImpl(dioClient: sl()));
 
     //Core

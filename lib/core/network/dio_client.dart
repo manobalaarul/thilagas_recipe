@@ -26,9 +26,10 @@ class DioClient {
       onRequest: (options, handler) async {
         // Add authentication token from SharedPreferences
         String? token = Prefs.getString(AppConstants.accessToken);
-        if (token != null) {
-          options.headers["Authorization"] = "Bearer $token";
-        }
+        print("Token : $token");
+        // if (token != "") {
+        options.headers["Authorization"] = "Bearer $token";
+        // }
         return handler.next(options);
       },
       onResponse: (response, handler) {
