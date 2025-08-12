@@ -3,7 +3,6 @@ import '../../model/cart/cart_model.dart';
 import '../../../../../core/constants/api_routes.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/network/dio_client.dart';
-import '../../model/category/category_model.dart';
 
 abstract class CartRemoteDatasource {
   Future<CartModel> getCartItems(dynamic params);

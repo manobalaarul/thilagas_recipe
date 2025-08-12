@@ -6,4 +6,7 @@ class ApiRoutes {
   static const String register = 'user/register';
   static const String login = 'user/login';
   static const String cartItems = 'cart/get_cart_items';
+  static const String wishlistItems = 'wishlist/get_wishlist_items';
+  static const String addWishlistItems = 'wishlist/add_to_wishlist';
+  static const String removeWishlistItems = 'wishlist/delete_wishlist_item';
 }

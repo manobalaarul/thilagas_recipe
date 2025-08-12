@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:thilagas_recipe/features/presentation/screens/wishlist/wishlist_page.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../cart/cart_page.dart';
@@ -19,7 +20,7 @@ class _MainTabState extends State<MainTab> {
 
   final List<Widget> _pages = [
     const HomePage(),
-    const HomePage(),
+    const WishlistPage(),
     const CartPage(),
     const ProfilePage(),
   ];

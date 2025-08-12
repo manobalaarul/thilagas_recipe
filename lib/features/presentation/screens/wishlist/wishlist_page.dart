@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common_widgets/appbar/custom_appbar.dart';
-import '../../bloc/cart_bloc/cart_bloc.dart';
-import 'widgets/cart_card.dart';
-import 'widgets/cart_loader.dart';
+import '../../bloc/wishlist_bloc/wishlist_bloc.dart';
+import 'widgets/wishlist_card.dart';
+import 'widgets/wishlist_loader.dart';
 
-class CartPage extends StatefulWidget {
-  const CartPage({super.key});
+class WishlistPage extends StatefulWidget {
+  const WishlistPage({super.key});
 
   @override
-  State<CartPage> createState() => _CartPageState();
+  State<WishlistPage> createState() => _WishlistPageState();
 }
 
-class _CartPageState extends State<CartPage> {
+class _WishlistPageState extends State<WishlistPage> {
   @override
   void initState() {
     // TODO: implement initState
-    BlocProvider.of<CartBloc>(context).add(GetCartEvent());
+    BlocProvider.of<WishlistBloc>(context).add(GetWishlistEvent());
 
     super.initState();
   }
@@ -29,29 +29,29 @@ class _CartPageState extends State<CartPage> {
       child: ListView(
         padding: const EdgeInsets.all(10),
         children: [
-          const CustomAppBar(title: 'Cart'),
-          BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+          const CustomAppBar(title: 'Wishlist'),
+          BlocBuilder<WishlistBloc, WishlistState>(builder: (context, state) {
             switch (state.status) {
-              case CartStatus.initial:
-              case CartStatus.loading:
+              case WishlistStatus.initial:
+              case WishlistStatus.loading:
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: 7,
                   itemBuilder: (context, index) {
-                    return const CartLoader();
+                    return const WishlistLoader();
                   },
                 );
-              case CartStatus.error:
+              case WishlistStatus.error:
                 return Center(child: Text(state.errorMsg!));
-              case CartStatus.loaded:
-                final carts = state.cart!.cart;
+              case WishlistStatus.loaded:
+                final carts = state.wishlist!.wishlist;
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: carts.length,
                   itemBuilder: (context, index) {
-                    return CartCard(item: carts[index]);
+                    return WishlistCard(item: carts[index]);
                   },
                 );
             }

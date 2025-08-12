@@ -1,10 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_colors.dart';
-import '../../domain/entities/cart/cart_response_entity.dart';
-import '../../presentation/utils/display_in_rupees.dart';
-import '../../presentation/utils/price_with_discount.dart';
+import '../../../../../core/constants/app_colors.dart';
+import '../../../../domain/entities/cart/cart_response_entity.dart';
+import '../../../utils/display_in_rupees.dart';
+import '../../../utils/price_with_discount.dart';
 
 class CartCard extends StatefulWidget {
   final Cart item;

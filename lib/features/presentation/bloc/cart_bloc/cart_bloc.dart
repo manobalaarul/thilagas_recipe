@@ -10,10 +10,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final GetCartUsecase getCategoryUsecase;
 
   CartBloc(this.getCategoryUsecase) : super(CartState()) {
-    on<GetCartEvent>(_getCategory);
+    on<GetCartEvent>(_getCart);
   }
 
-  _getCategory(GetCartEvent event, Emitter<CartState> emit) async {
+  _getCart(GetCartEvent event, Emitter<CartState> emit) async {
     emit(state.copyWith(status: CartStatus.loading));
 
     final result = await getCategoryUsecase.call({});

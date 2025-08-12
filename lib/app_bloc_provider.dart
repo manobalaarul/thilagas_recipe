@@ -9,6 +9,7 @@ import 'features/presentation/bloc/category_bloc/category_bloc.dart';
 import 'features/presentation/bloc/login/login_bloc.dart';
 import 'features/presentation/bloc/offer_bloc/offer_bloc.dart';
 import 'features/presentation/bloc/product_bloc/product_bloc.dart';
+import 'features/presentation/bloc/wishlist_bloc/wishlist_bloc.dart';
 
 class AppBlocProvider {
   static List<SingleChildWidget> get providers {
@@ -20,6 +21,7 @@ class AppBlocProvider {
       BlocProvider<AuthBloc>(create: (context) => AuthBloc(sl())),
       BlocProvider<LoginBloc>(create: (context) => LoginBloc(sl())),
       BlocProvider<CartBloc>(create: (context) => CartBloc(sl())),
+      BlocProvider<WishlistBloc>(create: (context) => WishlistBloc(sl(), sl())),
     ];
   }
 }
