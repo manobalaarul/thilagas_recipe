@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:thilagas_recipe/core/constants/app_constants.dart';
+import 'package:thilagas_recipe/features/presentation/screens/maintab/maintab.dart';
+import 'package:thilagas_recipe/features/utils/helper/value_preferences.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../common_widgets/buttons/long_btn.dart';
-import 'signup_page.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
@@ -16,21 +18,22 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   PageController controller = PageController();
   List pageArr = [
     {
-      "title": "Hello",
+      "title": "Get",
       "subtitle":
-          "Discover the best foods from over 1,000\nrestaurants and fast delivery to your\ndoorstep",
+          "Add a burst of flavor to your breakfast with Thilaga’s Recipe Idli Powder - also known as Idli Milagai Podi or Gunpowder.",
       "image": "assets/images/on_boarding_1.png"
     },
     {
       "title": "Ready ?",
-      "subtitle": "Fast food delivery to your home, office\nwhereever you are",
+      "subtitle":
+          "Boost your daily nutrition with Thilaga’s Recipe Curry Leaves Powder (Karuveppilai Podi) – a traditional South Indian side dish.",
       "image": "assets/images/on_boarding_2.png"
     },
     {
-      "title": "Hello",
+      "title": "Go",
       "subtitle":
-          "Discover the best foods from over 1,000\nrestaurants and fast delivery to your\ndoorstep",
-      "image": "assets/images/on_boarding_1.png"
+          "Give your family the gift of traditional wellness with Thilaga’s Recipe Health Mix (Sathu Maavu) – a time-tested, multigrain nutrition blend made from 100% natural ingredients.",
+      "image": "assets/images/on_boarding_3.png"
     },
   ];
 
@@ -78,7 +81,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     child: Column(
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10)),
                           child: Image.asset(
@@ -88,7 +91,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Column(
                             children: [
                               Text(
@@ -104,7 +107,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                                 height: media.width * 0.05,
                               ),
                               Container(
-                                padding: EdgeInsets.only(left: 50, right: 50),
+                                padding:
+                                    const EdgeInsets.only(left: 50, right: 50),
                                 child: Text(
                                   pObj["subtitle"].toString(),
                                   textAlign: TextAlign.center,
@@ -136,7 +140,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   children: pageArr.map((e) {
                     var index = pageArr.indexOf(e);
                     return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
                       height: 20,
                       width: 20,
                       decoration: BoxDecoration(
@@ -153,15 +157,16 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     fontSize: 18,
                     onPressed: () {
                       if (selectedPage >= 2) {
+                        Prefs.setBool(AppConstants.onBoardStatus, false);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SignupPage()));
+                                builder: (context) => const MainTab()));
                       } else {
                         setState(() {
                           selectedPage = selectedPage + 1;
                           controller.animateToPage(selectedPage,
-                              duration: Duration(microseconds: 500),
+                              duration: const Duration(microseconds: 500),
                               curve: Curves.bounceInOut);
                         });
                       }

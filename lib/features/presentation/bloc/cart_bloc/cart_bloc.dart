@@ -14,7 +14,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   _getCart(GetCartEvent event, Emitter<CartState> emit) async {
-    emit(state.copyWith(status: CartStatus.loading));
+    // Show loader only if we have no wishlist yet
+    if (state.cart == null || state.cart!.cart.isEmpty) {
+      emit(state.copyWith(status: CartStatus.loading));
+    } else {
+      // Keep loaded state, but we can still update other fields if needed
+      emit(state.copyWith(status: CartStatus.loaded));
+    }
 
     final result = await getCategoryUsecase.call({});
 

@@ -21,15 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  _fetchDatas() {
-    BlocProvider.of<OfferBloc>(context).add(GetOfferEvent());
-    BlocProvider.of<CategoryBloc>(context).add(GetCategoryEvent());
-    BlocProvider.of<ProductBloc>(context).add(GetProductEvent());
-  }
-
   @override
   void initState() {
-    _fetchDatas();
     super.initState();
   }
 

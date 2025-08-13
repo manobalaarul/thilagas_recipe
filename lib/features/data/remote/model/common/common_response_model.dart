@@ -1,22 +1,19 @@
 import 'dart:convert';
 
+import '../../../../domain/entities/common/common_response_entity.dart';
+
 CommonResponseModel commonResponseModelFromJson(String str) =>
     CommonResponseModel.fromJson(json.decode(str));
 
 String commonResponseModelToJson(CommonResponseModel data) =>
     json.encode(data.toJson());
 
-class CommonResponseModel {
-  Map<String, dynamic> data;
-  String message;
-  bool error;
-  bool success;
-
+class CommonResponseModel extends CommonResponseEntity {
   CommonResponseModel({
-    required this.data,
-    required this.message,
-    required this.error,
-    required this.success,
+    required super.data,
+    required super.message,
+    required super.error,
+    required super.success,
   });
 
   factory CommonResponseModel.fromJson(Map<String, dynamic> json) =>
@@ -27,6 +24,7 @@ class CommonResponseModel {
         success: json["success"],
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         "data": data,
         "message": message,

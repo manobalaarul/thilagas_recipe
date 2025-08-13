@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nested/nested.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/login_check_bloc/logincheck_bloc.dart';
 
 import 'core/theme/bloc/theme_bloc.dart';
 import 'di/di_module.dart';
@@ -14,14 +15,21 @@ import 'features/presentation/bloc/wishlist_bloc/wishlist_bloc.dart';
 class AppBlocProvider {
   static List<SingleChildWidget> get providers {
     return [
-      BlocProvider<OfferBloc>(create: (context) => OfferBloc(sl())),
-      BlocProvider<CategoryBloc>(create: (context) => CategoryBloc(sl())),
-      BlocProvider<ProductBloc>(create: (context) => ProductBloc(sl())),
+      BlocProvider<OfferBloc>(
+          create: (context) => OfferBloc(sl())..add(GetOfferEvent())),
+      BlocProvider<CategoryBloc>(
+          create: (context) => CategoryBloc(sl())..add(GetCategoryEvent())),
+      BlocProvider<ProductBloc>(
+          create: (context) => ProductBloc(sl())..add(GetProductEvent())),
       BlocProvider(create: (context) => ThemeBloc()..add(LoadThemeEvent())),
       BlocProvider<AuthBloc>(create: (context) => AuthBloc(sl())),
       BlocProvider<LoginBloc>(create: (context) => LoginBloc(sl())),
-      BlocProvider<CartBloc>(create: (context) => CartBloc(sl())),
-      BlocProvider<WishlistBloc>(create: (context) => WishlistBloc(sl(), sl())),
+      BlocProvider<CartBloc>(
+          create: (context) => CartBloc(sl())..add(GetCartEvent())),
+      BlocProvider<WishlistBloc>(
+          create: (context) =>
+              WishlistBloc(sl(), sl(), sl())..add(GetWishlistEvent())),
+      BlocProvider<LogincheckBloc>(create: (context) => LogincheckBloc())
     ];
   }
 }

@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/login_check_bloc/logincheck_bloc.dart';
 import 'package:thilagas_recipe/features/presentation/screens/maintab/maintab.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../common_widgets/buttons/long_btn.dart';
 import '../../../common_widgets/textfield/apptextformfield.dart';
+import '../../../utils/helper/value_preferences.dart';
 import '../../bloc/login/login_bloc.dart';
 import 'otp_verify_page.dart';
 import 'signup_page.dart';
@@ -65,6 +68,11 @@ class _LoginpageState extends State<Loginpage> {
     }
   }
 
+  void addToAuthBloc(BuildContext context) async {
+    final String? token = Prefs.getString(AppConstants.accessToken);
+    context.read<LogincheckBloc>().add(LoggedIn(token!));
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
@@ -93,12 +101,13 @@ class _LoginpageState extends State<Loginpage> {
                         if (Navigator.canPop(context)) {
                           Navigator.pop(context); // Close loading dialog
                         }
-
+                        addToAuthBloc(context);
                         // Show success toast
                         Fluttertoast.showToast(
                           msg: state.successMsg ?? "Login Successful",
                           toastLength: Toast.LENGTH_LONG,
                         );
+
                         Get.offAll(() => const MainTab());
                       } else if (state.status == LoginStatus.error) {
                         if (Navigator.canPop(context)) {

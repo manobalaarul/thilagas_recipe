@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:thilagas_recipe/core/constants/app_constants.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/login_check_bloc/logincheck_bloc.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/product_bloc/product_bloc.dart';
 import 'package:thilagas_recipe/features/presentation/screens/maintab/maintab.dart';
 import 'package:thilagas_recipe/features/utils/helper/value_preferences.dart';
 
@@ -74,6 +77,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         if (Prefs.getString(AppConstants.accessToken) == "") {
                           Get.to(const Loginpage());
                         } else {
+                          BlocProvider.of<LogincheckBloc>(context)
+                              .add(LoggedOut());
+                          BlocProvider.of<ProductBloc>(context)
+                              .add(GetProductEvent());
                           Prefs.setString(AppConstants.accessToken, "");
                           Prefs.setString(AppConstants.refreshToken, "");
                           Prefs.setString(AppConstants.name, "");

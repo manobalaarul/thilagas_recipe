@@ -25,6 +25,12 @@ class WishlistRemoteDatasourceImpl implements WishlistRemoteDatasource {
       final offers = WishlistModel.fromJson(response.data);
       return offers;
     } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        print("error");
+        throw ServerException(
+          message: e.response?.data['message'] ?? 'Something went wrong',
+        );
+      }
       throw ServerException(
         message: e.response?.data['message'] ?? 'Something went wrong',
       );
@@ -37,7 +43,7 @@ class WishlistRemoteDatasourceImpl implements WishlistRemoteDatasource {
   Future<WishlistAddModel> addWishlistItems(params) async {
     try {
       final response =
-          await dioClient.put(path: ApiRoutes.addWishlistItems, data: params);
+          await dioClient.post(path: ApiRoutes.addWishlistItems, data: params);
       print(response.data);
       final offers = WishlistAddModel.fromJson(response.data);
       return offers;

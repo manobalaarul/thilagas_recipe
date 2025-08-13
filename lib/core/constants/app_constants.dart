@@ -15,4 +15,6 @@ class AppConstants {
   static const String refreshToken = "refreshToken";
   static const String name = "userName";
   static const String email = "userEmail";
+
+  static const String onBoardStatus = "onBoardStatus";
 }

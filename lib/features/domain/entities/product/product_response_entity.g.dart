@@ -50,7 +50,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       v: (json['__v'] as num).toInt(),
       moreDetails: json['more_details'] == null
           ? null
-          : MoreDetails.fromJson(json['more_details'] as Map<String, dynamic>),
+          : json['more_details'] as Map<String, dynamic>,
     );
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
@@ -99,33 +99,6 @@ const _$NameEnumMap = {
   Name.HOMEMADE_MASALA: 'Homemade Masala',
   Name.MASALA: 'Masala',
 };
-
-MoreDetails _$MoreDetailsFromJson(Map<String, dynamic> json) => MoreDetails(
-      productName: json['Product Name'] as String,
-      brand: json['Brand'] as String,
-      netWeights: json['Net Weights'] as String,
-      shelfLife: json['Shelf Life'] as String,
-      storageInstructions: json['Storage Instructions'] as String,
-      usage: json['Usage'] as String,
-      flavorProfile: json['Flavor Profile'] as String?,
-      countryOfOrigin: json['Country of Origin'] as String,
-      certification: json['Certification'] as String,
-      flavourProfile: json['Flavour Profile'] as String?,
-    );
-
-Map<String, dynamic> _$MoreDetailsToJson(MoreDetails instance) =>
-    <String, dynamic>{
-      'Product Name': instance.productName,
-      'Brand': instance.brand,
-      'Net Weights': instance.netWeights,
-      'Shelf Life': instance.shelfLife,
-      'Storage Instructions': instance.storageInstructions,
-      'Usage': instance.usage,
-      'Flavor Profile': instance.flavorProfile,
-      'Country of Origin': instance.countryOfOrigin,
-      'Certification': instance.certification,
-      'Flavour Profile': instance.flavourProfile,
-    };
 
 Variant _$VariantFromJson(Map<String, dynamic> json) => Variant(
       name: json['name'] as String,

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
-class NoData extends StatelessWidget {
+class AskLogin extends StatelessWidget {
   final String data;
-  const NoData({
+  const AskLogin({
     super.key,
     required this.data,
   });
@@ -17,10 +16,9 @@ class NoData extends StatelessWidget {
         SizedBox(
           height: media.height / 10,
         ),
-        LottieBuilder.asset(
-          'assets/images/animation/no_item.json',
-          width: media.width, // Adjust size if needed
-          height: media.height / 2,
+        Image.asset(
+          'assets/images/nothing_here_yet.webp', // Make sure this image exists in your assets folder
+          width: media.width, // Adjust size as needed
         ),
         const SizedBox(height: 10),
         Text(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../domain/entities/product/product_response_entity.dart';
+import '../../presentation/screens/product/product_view.dart';
+import '../../presentation/screens/wishlist/widgets/add_to_wishlist_btn.dart';
 import '../../presentation/utils/display_in_rupees.dart';
 import '../../presentation/utils/price_with_discount.dart';
 import '../../utils/helper/path_to_url.dart';
@@ -16,7 +18,12 @@ class ProductCard extends StatelessWidget {
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductView(product: product)));
+      },
       child: Container(
         width: media.width / 2.5,
         padding: const EdgeInsets.all(4),
@@ -73,20 +80,20 @@ class ProductCard extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             // Action Icons
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 5),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       AddToCartBtn(
-            //         product: product,
-            //         design: false,
-            //       ),
-            //       AddToWishlistBtn(product: product)
-            //     ],
-            //   ),
-            // ),
-            // const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // AddToCartBtn(
+                  //   product: product,
+                  //   design: false,
+                  // ),
+                  AddToWishlistBtn(productId: product.id)
+                ],
+              ),
+            ),
+            const SizedBox(height: 5),
           ],
         ),
       ),

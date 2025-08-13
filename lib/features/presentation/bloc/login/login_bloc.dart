@@ -36,6 +36,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       Prefs.setString(AppConstants.refreshToken, loggedUser.user.refreshToken);
       Prefs.setString(AppConstants.name, loggedUser.user.userDetails.name);
       Prefs.setString(AppConstants.email, loggedUser.user.userDetails.email);
+
+      
     });
   }
 }

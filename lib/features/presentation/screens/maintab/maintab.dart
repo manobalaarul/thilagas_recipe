@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thilagas_recipe/features/presentation/screens/wishlist/wishlist_page.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../bloc/login_check_bloc/logincheck_bloc.dart';
 import '../cart/cart_page.dart';
 import '../home/home_page.dart';
 import '../profile/profile_page.dart';
@@ -24,19 +26,32 @@ class _MainTabState extends State<MainTab> {
     const CartPage(),
     const ProfilePage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Dispatch event to check token
+    context.read<LogincheckBloc>().add(CheckAuthStatus());
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     final media = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: PopScope(
-        canPop: false, // Prevents auto pop
-        onPopInvoked: (didPop) {
-          if (didPop) return;
-          _showExitConfirmation(context);
+      body: BlocBuilder<LogincheckBloc, LogincheckState>(
+        builder: (context, state) {
+          return PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) {
+              if (didPop) return;
+              _showExitConfirmation(context);
+            },
+            child: _pages[_currentIndex],
+          );
         },
-        child: _pages[_currentIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -47,10 +62,9 @@ class _MainTabState extends State<MainTab> {
             _currentIndex = index;
           });
         },
-        type: BottomNavigationBarType
-            .fixed, // Ensures icons and labels remain visible
-        selectedItemColor: Colors.blue, // Selected item color
-        unselectedItemColor: Colors.grey, // Unselected item color
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: [
@@ -115,7 +129,7 @@ class _MainTabState extends State<MainTab> {
             child: const Text("Cancel"),
           ),
           TextButton(
-            onPressed: () => {SystemNavigator.pop()}, // Close the app
+            onPressed: () => SystemNavigator.pop(),
             child: const Text("Exit"),
           ),
         ],

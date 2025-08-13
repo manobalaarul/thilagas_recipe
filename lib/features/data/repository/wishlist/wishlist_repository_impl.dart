@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:thilagas_recipe/features/domain/entities/wishlist/add/wishlist_add_response_entity.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
+import '../../../domain/entities/common/common_response_entity.dart';
+import '../../../domain/entities/wishlist/add/wishlist_add_response_entity.dart';
 import '../../../domain/entities/wishlist/get/wishlist_response_entity.dart';
 import '../../../domain/repository/wishlist/wishlist_repository.dart';
 import '../../remote/datasource/wishlist/wishlist_remote_datasource.dart';
@@ -29,6 +30,20 @@ class WishlistRepositoryImpl implements WishlistRepository {
     try {
       final addedItem = await wishlistRemoteDatasource.addWishlistItems(params);
       return Right(addedItem);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return const Left(ServerFailure(message: 'Unexpected error'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CommonResponseEntity>> removeWishlistItems(
+      params) async {
+    try {
+      final removedItem =
+          await wishlistRemoteDatasource.removeWishlistItems(params);
+      return Right(removedItem);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } catch (e) {
