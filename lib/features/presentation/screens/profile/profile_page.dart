@@ -70,11 +70,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     ProfileOption(
                       icon: Icons.login,
-                      title: Prefs.getString(AppConstants.accessToken) == ""
+                      title: (Prefs.getString(AppConstants.accessToken) ==
+                                  null ||
+                              Prefs.getString(AppConstants.accessToken) == "")
                           ? "Login / Sign up"
                           : "Logout",
                       onTap: () {
-                        if (Prefs.getString(AppConstants.accessToken) == "") {
+                        if (Prefs.getString(AppConstants.accessToken) == null ||
+                            Prefs.getString(AppConstants.accessToken) == "") {
                           Get.to(const Loginpage());
                         } else {
                           BlocProvider.of<LogincheckBloc>(context)

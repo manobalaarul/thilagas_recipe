@@ -28,7 +28,7 @@ class ProductRemoteDatasourceImpl implements ProductRemoteDatasource {
         message: e.response?.data['message'] ?? 'Something went wrong',
       );
     } catch (e) {
-      throw ServerException(message: 'Something went wrong');
+      throw ServerException(message: 'Something went wrong in Flutter');
     }
   }
 }

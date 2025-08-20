@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:thilagas_recipe/features/domain/usecases/cart/add_cart_usecase.dart';
+import 'package:thilagas_recipe/features/domain/usecases/cart/update_cart_usecase.dart';
 
 import '../core/network/dio_client.dart';
 import '../features/data/remote/datasource/auth/auth_remote_datasource.dart';
@@ -48,7 +50,8 @@ class DiModule {
     sl.registerFactory(() => AuthBloc(sl<RegisterUsecase>()));
     sl.registerFactory(() => LoginBloc(sl<LoginUsecase>()));
     sl.registerFactory(() => LogincheckBloc());
-    sl.registerFactory(() => CartBloc(sl<GetCartUsecase>()));
+    sl.registerFactory(() => CartBloc(
+        sl<GetCartUsecase>(), sl<AddCartUsecase>(), sl<UpdateCartUsecase>()));
     sl.registerFactory(() => WishlistBloc(sl<GetWishlistUsecase>(),
         sl<AddWishlistUsecase>(), sl<RemoveWishlistUsecase>()));
 
@@ -59,6 +62,8 @@ class DiModule {
     sl.registerLazySingleton(() => RegisterUsecase(sl()));
     sl.registerLazySingleton(() => LoginUsecase(sl()));
     sl.registerLazySingleton(() => GetCartUsecase(sl()));
+    sl.registerLazySingleton(() => AddCartUsecase(sl()));
+    sl.registerLazySingleton(() => UpdateCartUsecase(sl()));
     sl.registerLazySingleton(() => GetWishlistUsecase(sl()));
     sl.registerLazySingleton(() => AddWishlistUsecase(sl()));
     sl.registerLazySingleton(() => RemoveWishlistUsecase(sl()));

@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import '../variant/variant_entity.dart';
+
 part 'product_response_entity.g.dart';
 
 ProductResponseEntity productResponseEntityFromJson(String str) =>
@@ -26,7 +28,7 @@ class ProductResponseEntity {
   int totalCount;
   @JsonKey(name: "totalPages")
   int totalPages;
-  @JsonKey(name: "product")
+  @JsonKey(name: "data")
   List<Product> product;
 
   ProductResponseEntity({
@@ -95,9 +97,9 @@ class Product {
 @JsonSerializable()
 class Category {
   @JsonKey(name: "_id")
-  Id id;
+  String id;
   @JsonKey(name: "name")
-  Name name;
+  String name;
   @JsonKey(name: "image")
   String image;
   @JsonKey(name: "createdAt")
@@ -125,71 +127,3 @@ class Category {
   Map<String, dynamic> toJson() => _$CategoryToJson(this);
 }
 
-enum Id {
-  @JsonValue("67f629697ebb4ec88aebf23c")
-  THE_67_F629697_EBB4_EC88_AEBF23_C,
-  @JsonValue("67f62c17aa2d697ded046ee0")
-  THE_67_F62_C17_AA2_D697_DED046_EE0,
-  @JsonValue("68559d0b5f71abe83a0c49be")
-  THE_68559_D0_B5_F71_ABE83_A0_C49_BE
-}
-
-final idValues = EnumValues({
-  "67f629697ebb4ec88aebf23c": Id.THE_67_F629697_EBB4_EC88_AEBF23_C,
-  "67f62c17aa2d697ded046ee0": Id.THE_67_F62_C17_AA2_D697_DED046_EE0,
-  "68559d0b5f71abe83a0c49be": Id.THE_68559_D0_B5_F71_ABE83_A0_C49_BE
-});
-
-enum Name {
-  @JsonValue("Combo Offers")
-  COMBO_OFFERS,
-  @JsonValue("Homemade Masala")
-  HOMEMADE_MASALA,
-  @JsonValue("Masala")
-  MASALA
-}
-
-final nameValues = EnumValues({
-  "Combo Offers": Name.COMBO_OFFERS,
-  "Homemade Masala": Name.HOMEMADE_MASALA,
-  "Masala": Name.MASALA
-});
-
-@JsonSerializable()
-class Variant {
-  @JsonKey(name: "name")
-  String name;
-  @JsonKey(name: "price")
-  int price;
-  @JsonKey(name: "discount")
-  int discount;
-  @JsonKey(name: "stock")
-  int stock;
-  @JsonKey(name: "_id")
-  String id;
-
-  Variant({
-    required this.name,
-    required this.price,
-    required this.discount,
-    required this.stock,
-    required this.id,
-  });
-
-  factory Variant.fromJson(Map<String, dynamic> json) =>
-      _$VariantFromJson(json);
-
-  Map<String, dynamic> toJson() => _$VariantToJson(this);
-}
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
-}

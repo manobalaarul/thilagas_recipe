@@ -7,6 +7,7 @@ import '../../presentation/screens/wishlist/widgets/add_to_wishlist_btn.dart';
 import '../../presentation/utils/display_in_rupees.dart';
 import '../../presentation/utils/price_with_discount.dart';
 import '../../utils/helper/path_to_url.dart';
+import '../cart/add_to_cart_btn.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -85,10 +86,11 @@ class ProductCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // AddToCartBtn(
-                  //   product: product,
-                  //   design: false,
-                  // ),
+                  AddToCartBtn(
+                    product: product,
+                    variant: product.variants[0],
+                    design: false,
+                  ),
                   AddToWishlistBtn(productId: product.id)
                 ],
               ),
