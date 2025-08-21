@@ -87,7 +87,7 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   AddToCartBtn(
-                    product: product,
+                    productId: product.id,
                     variant: product.variants[0],
                     design: false,
                   ),

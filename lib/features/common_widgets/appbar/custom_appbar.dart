@@ -38,7 +38,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     )
                   : Container(),
               Container(
-                // width: media.width / 1.8,
+                width: media.width / 1.6,
                 margin: const EdgeInsets.only(top: 4),
                 child: Text(
                   title,
@@ -51,7 +51,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           Row(
             children: [
-              InkWell(onTap: () {}, child: Icon(Icons.notifications)),
+              InkWell(onTap: () {}, child: const Icon(Icons.notifications)),
               SizedBox(
                 width: media.width / 20,
               ),

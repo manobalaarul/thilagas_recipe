@@ -1,14 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:thilagas_recipe/features/common_widgets/cart/add_to_cart_btn.dart';
 
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../domain/entities/cart/cart_response_entity.dart';
+import '../../../../domain/entities/variant/variant_entity.dart';
 import '../../../utils/display_in_rupees.dart';
 import '../../../utils/price_with_discount.dart';
 
 class CartCard extends StatefulWidget {
   final Cart item;
-  const CartCard({super.key, required this.item});
+  final Variant variant;
+  const CartCard({super.key, required this.item, required this.variant});
 
   @override
   State<CartCard> createState() => _CartCardState();
@@ -125,6 +128,10 @@ class _CartCardState extends State<CartCard> {
                 ),
               ),
             ),
+            AddToCartBtn(
+                design: false,
+                productId: widget.item.productId.id,
+                variant: widget.variant)
           ],
         ),
       ),

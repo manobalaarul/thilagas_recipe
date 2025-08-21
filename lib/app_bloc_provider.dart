@@ -25,7 +25,8 @@ class AppBlocProvider {
       BlocProvider<AuthBloc>(create: (context) => AuthBloc(sl())),
       BlocProvider<LoginBloc>(create: (context) => LoginBloc(sl())),
       BlocProvider<CartBloc>(
-          create: (context) => CartBloc(sl(), sl(), sl())..add(GetCartEvent())),
+          create: (context) =>
+              CartBloc(sl(), sl(), sl(), sl())..add(GetCartEvent())),
       BlocProvider<WishlistBloc>(
           create: (context) =>
               WishlistBloc(sl(), sl(), sl())..add(GetWishlistEvent())),

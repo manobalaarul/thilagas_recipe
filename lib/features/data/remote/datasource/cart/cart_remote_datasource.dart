@@ -10,6 +10,7 @@ abstract class CartRemoteDatasource {
   Future<CartModel> getCartItems(dynamic params);
   Future<CommonResponseModel> addCartItems(dynamic params);
   Future<CommonResponseModel> updateCartItems(dynamic params);
+  Future<CommonResponseModel> deleteCartItems(dynamic params);
 }
 
 class CartRemoteDatasourceImpl implements CartRemoteDatasource {
@@ -54,6 +55,23 @@ class CartRemoteDatasourceImpl implements CartRemoteDatasource {
     try {
       final response =
           await dioClient.put(path: ApiRoutes.updateCartItems, data: params);
+      print(response.data);
+      final offers = CommonResponseModel.fromJson(response.data);
+      return offers;
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.response?.data['message'] ?? 'Something went wrong',
+      );
+    } catch (e) {
+      throw ServerException(message: 'Something went wrong');
+    }
+  }
+
+  @override
+  Future<CommonResponseModel> deleteCartItems(params) async {
+    try {
+      final response =
+          await dioClient.delete(path: ApiRoutes.deleteCartItems, data: params);
       print(response.data);
       final offers = CommonResponseModel.fromJson(response.data);
       return offers;

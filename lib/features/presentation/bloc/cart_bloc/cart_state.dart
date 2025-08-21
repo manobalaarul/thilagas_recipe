@@ -6,10 +6,13 @@ enum AddCartStatus { initial, loading, loaded, error }
 
 enum UpdateCartStatus { initial, loading, loaded, error }
 
+enum DeleteCartStatus { initial, loading, loaded, error }
+
 class CartState {
   final CartStatus status;
   final AddCartStatus addCartStatus;
   final UpdateCartStatus updateCartStatus;
+  final DeleteCartStatus deleteCartStatus;
   final CartResponseEntity? cart;
   final String? errorMsg;
   final String? successMsg;
@@ -18,6 +21,7 @@ class CartState {
       {this.status = CartStatus.initial,
       this.addCartStatus = AddCartStatus.initial,
       this.updateCartStatus = UpdateCartStatus.initial,
+      this.deleteCartStatus = DeleteCartStatus.initial,
       this.cart,
       this.errorMsg,
       this.successMsg});
@@ -26,6 +30,7 @@ class CartState {
       {CartStatus? status,
       AddCartStatus? addCartStatus,
       UpdateCartStatus? updateCartStatus,
+      DeleteCartStatus? deleteCartStatus,
       final CartResponseEntity? cart,
       String? errorMsg,
       String? successMsg}) {
@@ -33,6 +38,7 @@ class CartState {
         status: status ?? this.status,
         addCartStatus: addCartStatus ?? this.addCartStatus,
         updateCartStatus: updateCartStatus ?? this.updateCartStatus,
+        deleteCartStatus: deleteCartStatus ?? this.deleteCartStatus,
         cart: cart ?? this.cart,
         errorMsg: errorMsg ?? this.errorMsg,
         successMsg: successMsg ?? this.successMsg);

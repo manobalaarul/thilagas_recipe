@@ -1,6 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:thilagas_recipe/features/domain/usecases/cart/add_cart_usecase.dart';
-import 'package:thilagas_recipe/features/domain/usecases/cart/update_cart_usecase.dart';
 
 import '../core/network/dio_client.dart';
 import '../features/data/remote/datasource/auth/auth_remote_datasource.dart';
@@ -23,7 +21,10 @@ import '../features/domain/repository/product/product_repository.dart';
 import '../features/domain/repository/wishlist/wishlist_repository.dart';
 import '../features/domain/usecases/auth/login_usecase.dart';
 import '../features/domain/usecases/auth/register_usecase.dart';
+import '../features/domain/usecases/cart/add_cart_usecase.dart';
+import '../features/domain/usecases/cart/delete_cart_usecase.dart';
 import '../features/domain/usecases/cart/get_cart_usecase.dart';
+import '../features/domain/usecases/cart/update_cart_usecase.dart';
 import '../features/domain/usecases/category/get_category_usecase.dart';
 import '../features/domain/usecases/offers/get_offer_usecase.dart';
 import '../features/domain/usecases/product/get_product_usecase.dart';
@@ -51,7 +52,10 @@ class DiModule {
     sl.registerFactory(() => LoginBloc(sl<LoginUsecase>()));
     sl.registerFactory(() => LogincheckBloc());
     sl.registerFactory(() => CartBloc(
-        sl<GetCartUsecase>(), sl<AddCartUsecase>(), sl<UpdateCartUsecase>()));
+        sl<GetCartUsecase>(),
+        sl<AddCartUsecase>(),
+        sl<UpdateCartUsecase>(),
+        sl<DeleteCartUsecase>()));
     sl.registerFactory(() => WishlistBloc(sl<GetWishlistUsecase>(),
         sl<AddWishlistUsecase>(), sl<RemoveWishlistUsecase>()));
 
@@ -64,6 +68,7 @@ class DiModule {
     sl.registerLazySingleton(() => GetCartUsecase(sl()));
     sl.registerLazySingleton(() => AddCartUsecase(sl()));
     sl.registerLazySingleton(() => UpdateCartUsecase(sl()));
+    sl.registerLazySingleton(() => DeleteCartUsecase(sl()));
     sl.registerLazySingleton(() => GetWishlistUsecase(sl()));
     sl.registerLazySingleton(() => AddWishlistUsecase(sl()));
     sl.registerLazySingleton(() => RemoveWishlistUsecase(sl()));

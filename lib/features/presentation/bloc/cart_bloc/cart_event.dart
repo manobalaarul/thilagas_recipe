@@ -20,3 +20,9 @@ class UpdateCartEvent extends CartEvent {
 
   UpdateCartEvent({required this.variant, required this.qty, required this.id});
 }
+
+class DeleteCartEvent extends CartEvent {
+  final String id;
+
+  DeleteCartEvent({required this.id});
+}

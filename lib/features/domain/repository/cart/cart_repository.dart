@@ -8,4 +8,5 @@ abstract class CartRepository {
   Future<Either<Failure, CartResponseEntity>> getCartItems(dynamic params);
   Future<Either<Failure, CommonResponseEntity>> addCartItems(dynamic params);
   Future<Either<Failure, CommonResponseEntity>> updateCartItems(dynamic params);
+  Future<Either<Failure, CommonResponseEntity>> deleteCartItems(dynamic params);
 }

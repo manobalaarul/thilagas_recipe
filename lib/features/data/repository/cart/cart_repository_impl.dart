@@ -37,8 +37,20 @@ class CartRepositoryImpl implements CartRepository {
   @override
   Future<Either<Failure, CommonResponseEntity>> updateCartItems(params) async {
     try {
-      final addCart = await cartRemoteDatasource.updateCartItems(params);
-      return Right(addCart);
+      final updateCart = await cartRemoteDatasource.updateCartItems(params);
+      return Right(updateCart);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return const Left(ServerFailure(message: 'Unexpected error'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CommonResponseEntity>> deleteCartItems(params) async {
+    try {
+      final deleteCart = await cartRemoteDatasource.deleteCartItems(params);
+      return Right(deleteCart);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } catch (e) {

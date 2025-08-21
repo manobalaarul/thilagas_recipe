@@ -3,21 +3,89 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thilagas_recipe/features/domain/entities/cart/cart_response_entity.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../domain/entities/product/product_response_entity.dart';
 import '../../domain/entities/variant/variant_entity.dart';
 import '../../presentation/bloc/cart_bloc/cart_bloc.dart';
 
-class AddToCartBtn extends StatelessWidget {
+class AddToCartBtn extends StatefulWidget {
   final bool design;
-  final Product product;
+  final String productId;
   final Variant variant;
 
   const AddToCartBtn({
     super.key,
     required this.design,
-    required this.product,
+    required this.productId,
     required this.variant,
   });
+
+  @override
+  State<AddToCartBtn> createState() => _AddToCartBtnState();
+}
+
+class _AddToCartBtnState extends State<AddToCartBtn> {
+  int? localCartQty; // optimistic UI qty
+  bool loading = false;
+
+  Future<void> handleAddToCart(
+    BuildContext context, {
+    required String productId,
+    required Variant variant,
+  }) async {
+    setState(() {
+      localCartQty = 1; // show instantly
+      loading = true;
+    });
+
+    context.read<CartBloc>().add(
+          AddCartEvent(productId: productId, variant: variant),
+        );
+
+    setState(() => loading = false);
+    context.read<CartBloc>().add(GetCartEvent());
+  }
+
+  Future<void> handleUpdateCart(
+    BuildContext context, {
+    required String cartId,
+    required Variant variant,
+    required int qty,
+  }) async {
+    setState(() {
+      localCartQty = qty; // update instantly
+      loading = true;
+    });
+
+    context.read<CartBloc>().add(
+          UpdateCartEvent(
+            id: cartId,
+            variant: variant,
+            qty: qty,
+          ),
+        );
+
+    setState(() => loading = false);
+    context.read<CartBloc>().add(GetCartEvent());
+  }
+
+  Future<void> handleDeleteCart(
+    BuildContext context, {
+    required String cartId,
+    required int qty,
+  }) async {
+    setState(() {
+      localCartQty = qty; // update instantly
+      loading = true;
+    });
+
+    context.read<CartBloc>().add(
+          DeleteCartEvent(
+            id: cartId,
+          ),
+        );
+
+    setState(() => loading = false);
+    context.read<CartBloc>().add(GetCartEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +97,21 @@ class AddToCartBtn extends StatelessWidget {
         if (state.cart != null) {
           try {
             cartItemDetails = state.cart!.cart.firstWhere(
-              (item) => item.productId.id == product.id,
+              (item) => item.productId.id == widget.productId,
             );
           } catch (_) {
             cartItemDetails = null;
           }
         }
 
-        final isLoading = state.addCartStatus == AddCartStatus.loading ||
+        final isLoading = loading ||
+            state.addCartStatus == AddCartStatus.loading ||
             state.updateCartStatus == UpdateCartStatus.loading;
 
-        if (cartItemDetails != null) {
+        // prefer local qty first -> then bloc qty -> else 0
+        final qty = localCartQty ?? cartItemDetails?.quantity ?? 0;
+
+        if (qty > 0) {
           return Container(
             width: media.width / 4.5,
             alignment: Alignment.center,
@@ -51,7 +123,7 @@ class AddToCartBtn extends StatelessWidget {
                         child: CircularProgressIndicator(strokeWidth: 2)),
                   )
                 : SizedBox(
-                    width: design ? media.width / 4 : media.width / 4.5,
+                    width: widget.design ? media.width / 4 : media.width / 4.5,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -63,32 +135,30 @@ class AddToCartBtn extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
-                              if (cartItemDetails!.quantity == 1) {
-                                context.read<CartBloc>().add(
-                                      UpdateCartEvent(
-                                        variant: cartItemDetails.variant,
-                                        id: cartItemDetails.productId.id,
-                                        qty: cartItemDetails.quantity - 1,
-                                      ),
-                                    );
+                              if (qty > 1) {
+                                handleUpdateCart(
+                                  context,
+                                  cartId: cartItemDetails!.id,
+                                  variant: widget.variant,
+                                  qty: qty - 1,
+                                );
                               } else {
-                                context.read<CartBloc>().add(
-                                      AddCartEvent(
-                                        variant: cartItemDetails.variant,
-                                        productId: cartItemDetails.productId.id,
-                                      ),
-                                    );
+                                handleDeleteCart(
+                                  context,
+                                  cartId: cartItemDetails!.id,
+                                  qty: 0,
+                                );
                               }
                             },
                             child: Icon(Icons.remove,
-                                size: design ? 30 : 20,
+                                size: widget.design ? 30 : 20,
                                 color: AppLightColor.primary),
                           ),
                         ),
                         Text(
-                          cartItemDetails.quantity.toString(),
+                          qty.toString(),
                           style: TextStyle(
-                              fontSize: design ? 20 : 17,
+                              fontSize: widget.design ? 20 : 17,
                               fontWeight: FontWeight.bold),
                         ),
                         Container(
@@ -99,16 +169,15 @@ class AddToCartBtn extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
-                              context.read<CartBloc>().add(
-                                    UpdateCartEvent(
-                                      variant: cartItemDetails!.variant,
-                                      id: cartItemDetails.productId.id,
-                                      qty: cartItemDetails.quantity + 1,
-                                    ),
-                                  );
+                              handleUpdateCart(
+                                context,
+                                cartId: cartItemDetails!.id,
+                                variant: widget.variant,
+                                qty: qty + 1,
+                              );
                             },
                             child: Icon(Icons.add,
-                                size: design ? 30 : 20,
+                                size: widget.design ? 30 : 20,
                                 color: AppLightColor.primary),
                           ),
                         ),
@@ -117,18 +186,24 @@ class AddToCartBtn extends StatelessWidget {
                   ),
           );
         } else {
-          return design
+          return widget.design
               ? ElevatedButton(
                   onPressed: () {
-                    context.read<CartBloc>().add(
-                        AddCartEvent(productId: product.id, variant: variant));
+                    handleAddToCart(
+                      context,
+                      productId: widget.productId,
+                      variant: widget.variant,
+                    );
                   },
                   child: const Text('Add to Cart'),
                 )
               : InkWell(
                   onTap: () {
-                    context.read<CartBloc>().add(
-                        AddCartEvent(productId: product.id, variant: variant));
+                    handleAddToCart(
+                      context,
+                      productId: widget.productId,
+                      variant: widget.variant,
+                    );
                   },
                   child: isLoading
                       ? const SizedBox(
