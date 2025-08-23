@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nested/nested.dart';
-import 'package:thilagas_recipe/features/presentation/bloc/login_check_bloc/logincheck_bloc.dart';
 
 import 'core/theme/bloc/theme_bloc.dart';
 import 'di/di_module.dart';
@@ -8,6 +7,7 @@ import 'features/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'features/presentation/bloc/cart_bloc/cart_bloc.dart';
 import 'features/presentation/bloc/category_bloc/category_bloc.dart';
 import 'features/presentation/bloc/login/login_bloc.dart';
+import 'features/presentation/bloc/login_check_bloc/logincheck_bloc.dart';
 import 'features/presentation/bloc/offer_bloc/offer_bloc.dart';
 import 'features/presentation/bloc/product_bloc/product_bloc.dart';
 import 'features/presentation/bloc/wishlist_bloc/wishlist_bloc.dart';
@@ -30,7 +30,8 @@ class AppBlocProvider {
       BlocProvider<WishlistBloc>(
           create: (context) =>
               WishlistBloc(sl(), sl(), sl())..add(GetWishlistEvent())),
-      BlocProvider<LogincheckBloc>(create: (context) => LogincheckBloc())
+      BlocProvider<LogincheckBloc>(create: (context) => LogincheckBloc()),
+   
     ];
   }
 }

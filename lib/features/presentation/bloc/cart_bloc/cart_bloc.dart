@@ -16,93 +16,160 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final UpdateCartUsecase updateCartUsecase;
   final DeleteCartUsecase deleteCartUsecase;
 
-  CartBloc(this.getCategoryUsecase, this.addCartUsecase, this.updateCartUsecase,
-      this.deleteCartUsecase)
-      : super(CartState()) {
+  CartBloc(
+    this.getCategoryUsecase,
+    this.addCartUsecase,
+    this.updateCartUsecase,
+    this.deleteCartUsecase,
+  ) : super(CartState()) {
     on<GetCartEvent>(_getCart);
     on<AddCartEvent>(_addCart);
     on<UpdateCartEvent>(_updateCart);
     on<DeleteCartEvent>(_deleteCart);
+    on<RecalculateCartEvent>(_onRecalculateCart);
+    on<ToggleGstEvent>(_onToggleGst);
   }
 
-  _getCart(GetCartEvent event, Emitter<CartState> emit) async {
-    // Show loader only if we have no wishlist yet
+  Future<void> _getCart(GetCartEvent event, Emitter<CartState> emit) async {
     if (state.cart == null || state.cart!.cart.isEmpty) {
       emit(state.copyWith(status: CartStatus.loading));
     } else {
-      // Keep loaded state, but we can still update other fields if needed
       emit(state.copyWith(status: CartStatus.loaded));
     }
 
     final result = await getCategoryUsecase.call({});
-
-    result.fold((failure) {
-      emit(state.copyWith(status: CartStatus.error, errorMsg: failure.message));
-    }, (loadedCart) {
-      emit(state.copyWith(status: CartStatus.loaded, cart: loadedCart));
-    });
+    result.fold(
+      (failure) {
+        emit(state.copyWith(
+            status: CartStatus.error, errorMsg: failure.message));
+      },
+      (loadedCart) {
+        emit(state.copyWith(status: CartStatus.loaded, cart: loadedCart));
+        add(RecalculateCartEvent(cart: loadedCart, gstPer: 5, isAddGst: false));
+      },
+    );
   }
 
-  _addCart(AddCartEvent event, Emitter<CartState> emit) async {
-    // Show loader only if we have no wishlist yet
-    if (state.cart == null || state.cart!.cart.isEmpty) {
-      emit(state.copyWith(addCartStatus: AddCartStatus.loading));
-    } else {
-      // Keep loaded state, but we can still update other fields if needed
-      emit(state.copyWith(addCartStatus: AddCartStatus.loaded));
-    }
-    final result = await addCartUsecase.call(
-        {"productId": event.productId, "variant": event.variant.toJson()});
+  Future<void> _addCart(AddCartEvent event, Emitter<CartState> emit) async {
+    emit(state.copyWith(addCartStatus: AddCartStatus.loading));
 
-    result.fold((failure) {
-      emit(state.copyWith(
-          addCartStatus: AddCartStatus.error, errorMsg: failure.message));
-    }, (loadedCart) {
-      emit(state.copyWith(
-          addCartStatus: AddCartStatus.loaded, successMsg: loadedCart.message));
+    final result = await addCartUsecase.call({
+      "productId": event.productId,
+      "variant": event.variant.toJson(),
     });
+
+    result.fold(
+      (failure) {
+        emit(state.copyWith(
+          addCartStatus: AddCartStatus.error,
+          errorMsg: failure.message,
+        ));
+      },
+      (success) {
+        emit(state.copyWith(
+          addCartStatus: AddCartStatus.loaded,
+          successMsg: success.message,
+        ));
+        // 🔑 Fetch latest cart after add
+        add(GetCartEvent());
+      },
+    );
   }
 
-  _updateCart(UpdateCartEvent event, Emitter<CartState> emit) async {
-    // Show loader only if we have no wishlist yet
-    if (state.cart == null || state.cart!.cart.isEmpty) {
-      emit(state.copyWith(updateCartStatus: UpdateCartStatus.loading));
-    } else {
-      // Keep loaded state, but we can still update other fields if needed
-      emit(state.copyWith(updateCartStatus: UpdateCartStatus.loaded));
-    }
+  Future<void> _updateCart(
+      UpdateCartEvent event, Emitter<CartState> emit) async {
+    emit(state.copyWith(updateCartStatus: UpdateCartStatus.loading));
 
-    final result = await updateCartUsecase
-        .call({"_id": event.id, "variant": event.variant, "qty": event.qty});
+    final result = await updateCartUsecase.call({
+      "_id": event.id,
+      "variant": event.variant.toJson(),
+      "qty": event.qty,
+    });
 
-    result.fold((failure) {
-      emit(state.copyWith(
-          updateCartStatus: UpdateCartStatus.error, errorMsg: failure.message));
-    }, (loadedCart) {
-      emit(state.copyWith(
+    result.fold(
+      (failure) {
+        emit(state.copyWith(
+          updateCartStatus: UpdateCartStatus.error,
+          errorMsg: failure.message,
+        ));
+      },
+      (success) {
+        emit(state.copyWith(
           updateCartStatus: UpdateCartStatus.loaded,
-          successMsg: loadedCart.message));
-    });
+          successMsg: success.message,
+        ));
+        // 🔑 Fetch latest cart after update
+        add(GetCartEvent());
+      },
+    );
   }
 
-  _deleteCart(DeleteCartEvent event, Emitter<CartState> emit) async {
-    // Show loader only if we have no wishlist yet
-    if (state.cart == null || state.cart!.cart.isEmpty) {
-      emit(state.copyWith(deleteCartStatus: DeleteCartStatus.loading));
-    } else {
-      // Keep loaded state, but we can still update other fields if needed
-      emit(state.copyWith(deleteCartStatus: DeleteCartStatus.loaded));
-    }
+  Future<void> _deleteCart(
+      DeleteCartEvent event, Emitter<CartState> emit) async {
+    emit(state.copyWith(deleteCartStatus: DeleteCartStatus.loading));
 
     final result = await deleteCartUsecase.call({"_id": event.id});
 
-    result.fold((failure) {
-      emit(state.copyWith(
-          deleteCartStatus: DeleteCartStatus.error, errorMsg: failure.message));
-    }, (loadedCart) {
-      emit(state.copyWith(
+    result.fold(
+      (failure) {
+        emit(state.copyWith(
+          deleteCartStatus: DeleteCartStatus.error,
+          errorMsg: failure.message,
+        ));
+      },
+      (success) {
+        emit(state.copyWith(
           deleteCartStatus: DeleteCartStatus.loaded,
-          successMsg: loadedCart.message));
-    });
+          successMsg: success.message,
+        ));
+        // 🔑 Fetch latest cart after delete
+        add(GetCartEvent());
+      },
+    );
+  }
+
+  void _onRecalculateCart(
+    RecalculateCartEvent event,
+    Emitter<CartState> emit,
+  ) {
+    double total = 0.0;
+    double originalTotal = 0.0;
+    int qty = 0;
+
+    for (var item in event.cart.cart) {
+      int originalPrice = item.variant.price;
+      int discountPercent = item.variant.discount;
+
+      // calculate discount amount
+      int discountAmount = ((originalPrice * discountPercent) / 100).ceil();
+
+      // price after discount
+      int discountedPrice = originalPrice - discountAmount;
+
+      int quantity = item.quantity;
+
+      total += discountedPrice * quantity;
+      originalTotal += originalPrice * quantity;
+      qty += quantity;
+    }
+
+    double gstPer = event.gstPer / 100.0;
+    double gst = event.isAddGst ? total * gstPer : 0.0;
+
+    emit(state.copyWith(
+      subTotal: total,
+      total: total + gst,
+      noDiscountTotal: originalTotal,
+      gst: gst,
+      totalQty: qty,
+      isAddGst: event.isAddGst,
+    ));
+  }
+
+  void _onToggleGst(
+    ToggleGstEvent event,
+    Emitter<CartState> emit,
+  ) {
+    emit(state.copyWith(isAddGst: !state.isAddGst));
   }
 }

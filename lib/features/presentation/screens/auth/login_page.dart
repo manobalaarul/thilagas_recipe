@@ -11,7 +11,9 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../common_widgets/buttons/long_btn.dart';
 import '../../../common_widgets/textfield/apptextformfield.dart';
 import '../../../utils/helper/value_preferences.dart';
+import '../../bloc/cart_bloc/cart_bloc.dart';
 import '../../bloc/login/login_bloc.dart';
+import '../../bloc/wishlist_bloc/wishlist_bloc.dart';
 import 'otp_verify_page.dart';
 import 'signup_page.dart';
 
@@ -107,6 +109,9 @@ class _LoginpageState extends State<Loginpage> {
                           msg: state.successMsg ?? "Login Successful",
                           toastLength: Toast.LENGTH_LONG,
                         );
+
+                        context.read<CartBloc>().add(GetCartEvent());
+                        context.read<WishlistBloc>().add(GetWishlistEvent());
 
                         Get.offAll(() => const MainTab());
                       } else if (state.status == LoginStatus.error) {

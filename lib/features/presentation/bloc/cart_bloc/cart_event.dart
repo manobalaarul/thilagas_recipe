@@ -26,3 +26,17 @@ class DeleteCartEvent extends CartEvent {
 
   DeleteCartEvent({required this.id});
 }
+
+class RecalculateCartEvent extends CartEvent {
+  final CartResponseEntity cart;
+  final double gstPer;
+  final bool isAddGst;
+
+  RecalculateCartEvent({
+    required this.cart,
+    required this.gstPer,
+    required this.isAddGst,
+  });
+}
+
+class ToggleGstEvent extends CartEvent {}

@@ -37,9 +37,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: AppBlocProvider.providers,
-      child: BlocBuilder<ThemeBloc, ThemeState>(
-        builder: (context, state) {
+        providers: AppBlocProvider.providers,
+        child: BlocBuilder<ThemeBloc, ThemeState>(builder: (context, state) {
           return GetMaterialApp(
             title: 'Thilagas Recipe',
             debugShowCheckedModeBanner: false,
@@ -48,8 +47,6 @@ class MyApp extends StatelessWidget {
             themeMode: state.themeMode,
             home: onBoardStatus ? const OnBoardingPage() : const MainTab(),
           );
-        },
-      ),
-    );
+        }));
   }
 }
