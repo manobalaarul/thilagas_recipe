@@ -23,15 +23,6 @@ class _CartPageState extends State<CartPage> {
   @override
   void initState() {
     super.initState();
-
-    // Fetch cart data when page initializes
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final loginState = context.read<LogincheckBloc>().state;
-      if (loginState.status == LogincheckStatus.authenticated) {
-        print("🔥 Triggering GetCartEvent from CartPage"); // Debug log
-        context.read<CartBloc>().add(GetCartEvent());
-      }
-    });
   }
 
   @override
