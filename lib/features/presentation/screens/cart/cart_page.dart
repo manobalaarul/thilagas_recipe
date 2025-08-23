@@ -188,7 +188,7 @@ class _CartPageState extends State<CartPage> {
                               Text(
                                 displayPriceInRupees(cartState.total.toInt()),
                                 style: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                   color: AppDarkColor.primary,
                                 ),
