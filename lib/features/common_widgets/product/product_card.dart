@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_colors.dart';
-import '../../domain/entities/product/product_response_entity.dart';
+import '../../domain/entities/product/product_entity.dart';
 import '../../presentation/screens/product/product_view.dart';
 import '../../presentation/screens/wishlist/widgets/add_to_wishlist_btn.dart';
 import '../../presentation/utils/display_in_rupees.dart';

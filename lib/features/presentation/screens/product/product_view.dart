@@ -4,7 +4,7 @@ import 'package:flutter_html/flutter_html.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../common_widgets/appbar/custom_appbar.dart';
 import '../../../common_widgets/product/product_image_slider.dart';
-import '../../../domain/entities/product/product_response_entity.dart';
+import '../../../domain/entities/product/product_entity.dart';
 import '../../utils/display_in_rupees.dart';
 import '../../utils/price_with_discount.dart';
 

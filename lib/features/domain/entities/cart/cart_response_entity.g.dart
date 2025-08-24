@@ -97,4 +97,3 @@ Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
       '__v': instance.v,
       'category': instance.category,
     };
-

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:thilagas_recipe/features/presentation/screens/category/category_page.dart';
 import '../../../../../domain/entities/category/category_response_entity.dart';
 import '../../../../../utils/helper/path_to_url.dart';
 
@@ -12,7 +14,7 @@ class CategoryCard extends StatelessWidget {
     var media = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        // Get.to(() => CategoryProduct(category: category));
+        Get.to(() => CategoryPage(category: category));
       },
       child: Container(
         width: media.width / 4,

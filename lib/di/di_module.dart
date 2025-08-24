@@ -27,6 +27,7 @@ import '../features/domain/usecases/cart/get_cart_usecase.dart';
 import '../features/domain/usecases/cart/update_cart_usecase.dart';
 import '../features/domain/usecases/category/get_category_usecase.dart';
 import '../features/domain/usecases/offers/get_offer_usecase.dart';
+import '../features/domain/usecases/product/get_category_product_usecase.dart';
 import '../features/domain/usecases/product/get_product_usecase.dart';
 import '../features/domain/usecases/wishlist/add_wishlist_usecase.dart';
 import '../features/domain/usecases/wishlist/get_wishlist_usecase.dart';
@@ -47,7 +48,7 @@ class DiModule {
     //Bloc
     sl.registerFactory(() => OfferBloc(sl()));
     sl.registerFactory(() => CategoryBloc(sl()));
-    sl.registerFactory(() => ProductBloc(sl()));
+    sl.registerFactory(() => ProductBloc(sl(), sl()));
     sl.registerFactory(() => AuthBloc(sl<RegisterUsecase>()));
     sl.registerFactory(() => LoginBloc(sl<LoginUsecase>()));
     sl.registerFactory(() => LogincheckBloc());
@@ -63,6 +64,7 @@ class DiModule {
     sl.registerLazySingleton(() => GetOfferUsecase(sl()));
     sl.registerLazySingleton(() => GetCategoryUsecase(sl()));
     sl.registerLazySingleton(() => GetProductUsecase(sl()));
+    sl.registerLazySingleton(() => GetCategoryProductUsecase(sl()));
     sl.registerLazySingleton(() => RegisterUsecase(sl()));
     sl.registerLazySingleton(() => LoginUsecase(sl()));
     sl.registerLazySingleton(() => GetCartUsecase(sl()));

@@ -1,4 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:thilagas_recipe/features/domain/entities/category/category_product_response_entity.dart';
+import 'package:thilagas_recipe/features/domain/entities/common/common_response_entity.dart';
+import 'package:thilagas_recipe/features/domain/usecases/product/get_category_product_usecase.dart';
 import 'package:thilagas_recipe/features/domain/usecases/product/get_product_usecase.dart';
 
 import '../../../domain/entities/product/product_response_entity.dart';
@@ -8,9 +11,12 @@ part 'product_event.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final GetProductUsecase getProductUsecase;
+  final GetCategoryProductUsecase getCategoryProductUsecase;
 
-  ProductBloc(this.getProductUsecase) : super(ProductState()) {
+  ProductBloc(this.getProductUsecase, this.getCategoryProductUsecase)
+      : super(ProductState()) {
     on<GetProductEvent>(_getProduct);
+    on<GetCategoryProductEvent>(_getCategoryProduct);
   }
 
   _getProduct(GetProductEvent event, Emitter<ProductState> emit) async {
@@ -22,7 +28,26 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(state.copyWith(
           status: ProductStatus.error, errorMsg: failure.message));
     }, (loadedProducts) {
-      emit(state.copyWith(status: ProductStatus.loaded, products: loadedProducts));
+      emit(state.copyWith(
+          status: ProductStatus.loaded, products: loadedProducts));
+    });
+  }
+
+  _getCategoryProduct(
+      GetCategoryProductEvent event, Emitter<ProductState> emit) async {
+    emit(state.copyWith(categoryProductStatus: CategoryProductStatus.loading));
+
+    final result =
+        await getCategoryProductUsecase.call({"categoryId": event.id});
+
+    result.fold((failure) {
+      emit(state.copyWith(
+          categoryProductStatus: CategoryProductStatus.error,
+          errorMsg: failure.message));
+    }, (loadedProducts) {
+      emit(state.copyWith(
+          categoryProductStatus: CategoryProductStatus.loaded,
+          categoryProducts: loadedProducts));
     });
   }
 }

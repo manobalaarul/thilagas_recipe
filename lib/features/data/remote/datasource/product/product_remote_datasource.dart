@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../../model/category/category_product_model.dart';
 
 import '../../../../../core/constants/api_routes.dart';
 import '../../../../../core/errors/exceptions.dart';
@@ -7,6 +8,7 @@ import '../../model/product/product_model.dart';
 
 abstract class ProductRemoteDatasource {
   Future<ProductModel> getProduct(dynamic params);
+  Future<CategoryProductModel> getCategoryProduct(dynamic params);
 }
 
 class ProductRemoteDatasourceImpl implements ProductRemoteDatasource {
@@ -22,6 +24,23 @@ class ProductRemoteDatasourceImpl implements ProductRemoteDatasource {
       });
       print(response.data);
       final offers = ProductModel.fromJson(response.data);
+      return offers;
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.response?.data['message'] ?? 'Something went wrong',
+      );
+    } catch (e) {
+      throw ServerException(message: 'Something went wrong in Flutter');
+    }
+  }
+
+  @override
+  Future<CategoryProductModel> getCategoryProduct(params) async {
+    try {
+      final response = await dioClient.post(
+          path: ApiRoutes.getCategoryProduct, data: params);
+      print(response.data);
+      final offers = CategoryProductModel.fromJson(response.data);
       return offers;
     } on DioException catch (e) {
       throw ServerException(

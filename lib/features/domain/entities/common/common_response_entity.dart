@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/src/widgets/basic.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'common_response_entity.g.dart';
@@ -32,4 +33,6 @@ class CommonResponseEntity {
       _$CommonResponseEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$CommonResponseEntityToJson(this);
+
+  map(SizedBox Function(dynamic product) param0) {}
 }

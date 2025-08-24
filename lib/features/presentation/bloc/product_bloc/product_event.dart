@@ -5,3 +5,9 @@ class ProductEvent {
 }
 
 class GetProductEvent extends ProductEvent {}
+
+class GetCategoryProductEvent extends ProductEvent {
+  final String id;
+
+  GetCategoryProductEvent({required this.id});
+}

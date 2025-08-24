@@ -20,7 +20,7 @@ class AppBlocProvider {
       BlocProvider<CategoryBloc>(
           create: (context) => CategoryBloc(sl())..add(GetCategoryEvent())),
       BlocProvider<ProductBloc>(
-          create: (context) => ProductBloc(sl())..add(GetProductEvent())),
+          create: (context) => ProductBloc(sl(), sl())..add(GetProductEvent())),
       BlocProvider(create: (context) => ThemeBloc()..add(LoadThemeEvent())),
       BlocProvider<AuthBloc>(create: (context) => AuthBloc(sl())),
       BlocProvider<LoginBloc>(create: (context) => LoginBloc(sl())),
@@ -31,7 +31,6 @@ class AppBlocProvider {
           create: (context) =>
               WishlistBloc(sl(), sl(), sl())..add(GetWishlistEvent())),
       BlocProvider<LogincheckBloc>(create: (context) => LogincheckBloc()),
-   
     ];
   }
 }

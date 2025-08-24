@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import '../../../../../common_widgets/product/product_card.dart';
+import '../../../../../domain/entities/product/product_entity.dart';
 import '../../../../../domain/entities/product/product_response_entity.dart';
 
 class NewArrivals extends StatelessWidget {
