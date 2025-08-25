@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:thilagas_recipe/features/common_widgets/design/no_data.dart';
-import 'package:thilagas_recipe/features/domain/entities/address/address_response_entity.dart';
+import 'package:get/get.dart';
 
 import '../../../../common_widgets/appbar/custom_appbar.dart';
 import '../../../../common_widgets/buttons/long_btn.dart';
+import 'add_address.dart';
 
 class MyAddress extends StatefulWidget {
   const MyAddress({super.key});
@@ -13,7 +13,6 @@ class MyAddress extends StatefulWidget {
 }
 
 class _MyAddressState extends State<MyAddress> {
-
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -30,16 +29,16 @@ class _MyAddressState extends State<MyAddress> {
                 ]);
               },
               child: ListView(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 children: [
-                  CustomAppBar(
+                  const CustomAppBar(
                     title: 'My Address',
                     needBack: true,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Column(
+                  const Column(
                     children: [
                       // Obx(() {
                       //   if (addressController.addressItems
@@ -79,15 +78,16 @@ class _MyAddressState extends State<MyAddress> {
                 bottom: 0,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: isDarkTheme ? Color(0xFF232323) : Colors.white,
-                      borderRadius: BorderRadius.only(
+                      color:
+                          isDarkTheme ? const Color(0xFF232323) : Colors.white,
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10))),
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: media.width,
                   child: LongBtn(
                       onPressed: () {
-                        // Get.to(() => AddAddress());
+                        Get.to(() => const AddAddress());
                       },
                       title: "Add Address",
                       fontSize: 20),

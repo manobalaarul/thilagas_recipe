@@ -10,6 +10,9 @@ import 'package:thilagas_recipe/features/utils/helper/value_preferences.dart';
 import '../../../common_widgets/appbar/custom_appbar.dart';
 import '../../../common_widgets/profile_widget/profile_option.dart';
 import '../auth/login_page.dart';
+import 'address/my_address.dart';
+import 'orders/my_orders.dart';
+import 'user_details.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -51,21 +54,21 @@ class _ProfilePageState extends State<ProfilePage> {
                       icon: Icons.person,
                       title: 'Profile',
                       onTap: () {
-                        // Get.to(() => UserDetails());
+                        Get.to(() => const UserDetails());
                       },
                     ),
                     ProfileOption(
                       icon: Icons.map,
                       title: 'Manage Address',
                       onTap: () {
-                        // Get.to(() => MyAddress());
+                        Get.to(() => const MyAddress());
                       },
                     ),
                     ProfileOption(
                       icon: Icons.shopping_cart_rounded,
                       title: 'My Orders',
                       onTap: () {
-                        // Get.to(() => MyOrders());
+                        Get.to(() => const MyOrders());
                       },
                     ),
                     ProfileOption(

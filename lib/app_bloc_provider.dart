@@ -18,9 +18,12 @@ class AppBlocProvider {
       BlocProvider<OfferBloc>(
           create: (context) => OfferBloc(sl())..add(GetOfferEvent())),
       BlocProvider<CategoryBloc>(
-          create: (context) => CategoryBloc(sl())..add(GetCategoryEvent())),
+          create: (context) => CategoryBloc(sl(), sl())
+            ..add(GetCategoryEvent())
+            ..add(GetSubCategoryEvent())),
       BlocProvider<ProductBloc>(
-          create: (context) => ProductBloc(sl(), sl())..add(GetProductEvent())),
+          create: (context) =>
+              ProductBloc(sl(), sl(), sl())..add(GetProductEvent())),
       BlocProvider(create: (context) => ThemeBloc()..add(LoadThemeEvent())),
       BlocProvider<AuthBloc>(create: (context) => AuthBloc(sl())),
       BlocProvider<LoginBloc>(create: (context) => LoginBloc(sl())),

@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'package:flutter/src/widgets/basic.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../variant/variant_entity.dart';
 import 'product_entity.dart';
 
 part 'product_response_entity.g.dart';
@@ -82,4 +81,3 @@ class Category {
 
   Map<String, dynamic> toJson() => _$CategoryToJson(this);
 }
-

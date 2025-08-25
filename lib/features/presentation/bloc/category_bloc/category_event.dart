@@ -5,3 +5,5 @@ class CategoryEvent {
 }
 
 class GetCategoryEvent extends CategoryEvent {}
+
+class GetSubCategoryEvent extends CategoryEvent {}

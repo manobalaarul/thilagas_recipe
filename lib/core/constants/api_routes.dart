@@ -2,7 +2,9 @@ class ApiRoutes {
   static const String getUsers = 'user';
   static const String getOffer = 'offer/get_offer';
   static const String getCategory = 'category/get_category';
+  static const String getSubCategory = 'subcategory/get_subcategory';
   static const String getProduct = 'product/get_product';
+  static const String getSearchProduct = 'product/search_product';
   static const String getCategoryProduct = 'product/get_by_category';
   static const String register = 'user/register';
   static const String login = 'user/login';

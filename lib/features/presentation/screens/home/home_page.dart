@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:thilagas_recipe/features/presentation/screens/home/widgets/product/product_loader.dart';
+import 'package:thilagas_recipe/features/presentation/screens/search/search_page.dart';
 
 import '../../../common_widgets/headlines/topicline.dart';
 import '../../bloc/category_bloc/category_bloc.dart';
@@ -45,7 +47,9 @@ class _HomePageState extends State<HomePage> {
                         ? Image.asset("assets/images/dark_logo.png")
                         : Image.asset("assets/images/logo.png")),
                 SearchField(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(const SearchPage());
+                  },
                   readOnly: true,
                   hintText: 'Search',
                 ),
