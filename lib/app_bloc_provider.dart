@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nested/nested.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/user_bloc/user_bloc.dart';
 
 import 'core/theme/bloc/theme_bloc.dart';
 import 'di/di_module.dart';
@@ -34,6 +35,11 @@ class AppBlocProvider {
           create: (context) =>
               WishlistBloc(sl(), sl(), sl())..add(GetWishlistEvent())),
       BlocProvider<LogincheckBloc>(create: (context) => LogincheckBloc()),
+      BlocProvider<UserBloc>(
+          create: (context) => UserBloc(sl(), sl(), sl(), sl())
+            ..add(FetchUserEvent())
+            ..add(GetAddressEvent())
+            ..add(GetOrderEvent())),
     ];
   }
 }

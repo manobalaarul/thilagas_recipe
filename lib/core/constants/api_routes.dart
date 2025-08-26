@@ -15,4 +15,8 @@ class ApiRoutes {
   static const String wishlistItems = 'wishlist/get_wishlist_items';
   static const String addWishlistItems = 'wishlist/add_to_wishlist';
   static const String removeWishlistItems = 'wishlist/delete_wishlist_item';
+  static const String updateUserDetails = 'user/update_user_details';
+  static const String fetchUserDetails = 'user/fetch_user_details';
+  static const String getAddress = 'address/get_address';
+  static const String getOrders = 'order/get_orders';
 }

@@ -9,7 +9,7 @@ part of 'order_response_entity.dart';
 OrderResponseEntity _$OrderResponseEntityFromJson(Map<String, dynamic> json) =>
     OrderResponseEntity(
       message: json['message'] as String,
-      order: (json['order'] as List<dynamic>)
+      order: (json['data'] as List<dynamic>)
           .map((e) => Order.fromJson(e as Map<String, dynamic>))
           .toList(),
       error: json['error'] as bool,
@@ -20,7 +20,7 @@ Map<String, dynamic> _$OrderResponseEntityToJson(
         OrderResponseEntity instance) =>
     <String, dynamic>{
       'message': instance.message,
-      'order': instance.order,
+      'data': instance.order,
       'error': instance.error,
       'success': instance.success,
     };

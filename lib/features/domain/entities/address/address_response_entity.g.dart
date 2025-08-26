@@ -12,7 +12,7 @@ AddressResponseEntity _$AddressResponseEntityFromJson(
       message: json['message'] as String,
       error: json['error'] as bool,
       success: json['success'] as bool,
-      address: (json['Address'] as List<dynamic>)
+      address: (json['data'] as List<dynamic>)
           .map((e) => Address.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -23,7 +23,7 @@ Map<String, dynamic> _$AddressResponseEntityToJson(
       'message': instance.message,
       'error': instance.error,
       'success': instance.success,
-      'Address': instance.address,
+      'data': instance.address,
     };
 
 Address _$AddressFromJson(Map<String, dynamic> json) => Address(
@@ -33,7 +33,7 @@ Address _$AddressFromJson(Map<String, dynamic> json) => Address(
       state: json['state'] as String,
       pincode: json['pincode'] as String,
       country: json['country'] as String,
-      mobile: json['mobile'] as String,
+      mobile: json['mobile'].toString(),
       status: json['status'] as bool,
       userId: json['userId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),

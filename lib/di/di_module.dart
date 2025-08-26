@@ -1,4 +1,10 @@
 import 'package:get_it/get_it.dart';
+import 'package:thilagas_recipe/features/data/repository/user/user_repository_impl.dart';
+import 'package:thilagas_recipe/features/domain/repository/user/user_repository.dart';
+import 'package:thilagas_recipe/features/domain/usecases/user/fetch_user_usecase.dart';
+import 'package:thilagas_recipe/features/domain/usecases/user/get_address_usecase.dart';
+import 'package:thilagas_recipe/features/domain/usecases/user/update_user_usecase.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/user_bloc/user_bloc.dart';
 
 import '../core/network/dio_client.dart';
 import '../features/data/remote/datasource/auth/auth_remote_datasource.dart';
@@ -6,6 +12,7 @@ import '../features/data/remote/datasource/cart/cart_remote_datasource.dart';
 import '../features/data/remote/datasource/category/category_remote_datasource.dart';
 import '../features/data/remote/datasource/offers/offers_remote_datasource.dart';
 import '../features/data/remote/datasource/product/product_remote_datasource.dart';
+import '../features/data/remote/datasource/user/user_remote_datasource.dart';
 import '../features/data/remote/datasource/wishlist/wishlist_remote_datasource.dart';
 import '../features/data/repository/auth/auth_repository_impl.dart';
 import '../features/data/repository/cart/cart_repository_impl.dart';
@@ -54,6 +61,7 @@ class DiModule {
     sl.registerFactory(() => AuthBloc(sl<RegisterUsecase>()));
     sl.registerFactory(() => LoginBloc(sl<LoginUsecase>()));
     sl.registerFactory(() => LogincheckBloc());
+    sl.registerFactory(() => UserBloc(sl(), sl(), sl(), sl()));
     sl.registerFactory(() => CartBloc(
         sl<GetCartUsecase>(),
         sl<AddCartUsecase>(),
@@ -78,6 +86,9 @@ class DiModule {
     sl.registerLazySingleton(() => GetWishlistUsecase(sl()));
     sl.registerLazySingleton(() => AddWishlistUsecase(sl()));
     sl.registerLazySingleton(() => RemoveWishlistUsecase(sl()));
+    sl.registerLazySingleton(() => FetchUserUsecase(sl()));
+    sl.registerLazySingleton(() => UpdateUserUsecase(sl()));
+    sl.registerLazySingleton(() => GetAddressUsecase(sl()));
 
     //Repository
     sl.registerLazySingleton<OfferRepository>(
@@ -92,6 +103,8 @@ class DiModule {
         () => CartRepositoryImpl(cartRemoteDatasource: sl()));
     sl.registerLazySingleton<WishlistRepository>(
         () => WishlistRepositoryImpl(wishlistRemoteDatasource: sl()));
+    sl.registerLazySingleton<UserRepository>(
+        () => UserRepositoryImpl(userRemoteDatasource: sl()));
 
     //Datasource
     sl.registerLazySingleton<OffersRemoteDatasource>(
@@ -106,6 +119,8 @@ class DiModule {
         () => CartRemoteDatasourceImpl(dioClient: sl()));
     sl.registerLazySingleton<WishlistRemoteDatasource>(
         () => WishlistRemoteDatasourceImpl(dioClient: sl()));
+    sl.registerLazySingleton<UserRemoteDatasource>(
+        () => UserRemoteDatasourceImpl(dioClient: sl()));
 
     //Core
     sl.registerLazySingleton(() => DioClient());

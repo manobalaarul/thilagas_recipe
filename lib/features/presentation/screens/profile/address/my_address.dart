@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/user_bloc/user_bloc.dart';
+import 'package:thilagas_recipe/features/presentation/screens/profile/address/widgets/address_card.dart';
 
 import '../../../../common_widgets/appbar/custom_appbar.dart';
 import '../../../../common_widgets/buttons/long_btn.dart';
+import '../../../../common_widgets/design/no_data.dart';
 import 'add_address.dart';
 
 class MyAddress extends StatefulWidget {
@@ -38,34 +42,35 @@ class _MyAddressState extends State<MyAddress> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Column(
+                  Column(
                     children: [
-                      // Obx(() {
-                      //   if (addressController.addressItems
-                      //       .any((address) => address.status)) {
-                      //     return ListView.builder(
-                      //         shrinkWrap: true, // Fixes vertical viewport issue
-                      //         physics:
-                      //             BouncingScrollPhysics(), // Enables smooth scrolling
-                      //         itemCount: addressController.addressItems.length,
-                      //         itemBuilder: (context, index) {
-                      //           final item = addressController.addressItems[
-                      //               index]; // Get item from the list
-                      //           return Visibility(
-                      //             visible: item
-                      //                 .status, // Only show if status is true
-                      //             child: GestureDetector(
-                      //               onTap: () => showAddressOptions(
-                      //                   context, item, isDarkTheme),
-                      //               child: AddressCard(item: item),
-                      //             ),
-                      //           );
-                      //         });
-                      //   }
-                      //   return NoData(
-                      //     data: 'No Addresses',
-                      //   );
-                      // }),
+                      BlocBuilder<UserBloc, UserState>(
+                          builder: (context, state) {
+                        switch (state.getAddressStatus) {
+                          case GetAddressStatus.initial:
+                          case GetAddressStatus.loading:
+                            return const CircularProgressIndicator();
+                          case GetAddressStatus.error:
+                            return Center(child: Text(state.errorMsg!));
+                          case GetAddressStatus.loaded:
+                            final address = state.address?.address ?? [];
+
+                            if (address.isEmpty) {
+                              return const Center(
+                                  child: NoData(
+                                      data: "Your address list is empty"));
+                            }
+
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: address.length,
+                              itemBuilder: (context, index) {
+                                return AddressCard(item: address[index]);
+                              },
+                            );
+                        }
+                      })
                     ],
                   ),
                   SizedBox(

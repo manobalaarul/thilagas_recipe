@@ -38,15 +38,10 @@ class CategoryRemoteDatasourceImpl implements CategoryRemoteDatasource {
   Future<SubCategoryModel> getSubCategory(params) async {
     try {
       final response = await dioClient.get(path: ApiRoutes.getSubCategory);
-
-      print("Raw Response: ${response.data.runtimeType} => ${response.data}");
-
-      // Check if response.data is a Map<String, dynamic>
       if (response.data is Map<String, dynamic>) {
         final subCategories = SubCategoryModel.fromJson(response.data);
         return subCategories;
       } else if (response.data is String) {
-        // Sometimes APIs return String JSON, not Map
         final subCategories =
             SubCategoryModel.fromJson(jsonDecode(response.data));
         return subCategories;
@@ -55,13 +50,10 @@ class CategoryRemoteDatasourceImpl implements CategoryRemoteDatasource {
             message: "Unexpected response format: ${response.data}");
       }
     } on DioException catch (e) {
-      print("DioException: ${e.message}");
       throw ServerException(
         message: e.response?.data['message'] ?? 'Something went wrong with API',
       );
-    } catch (e, stack) {
-      print("Generic error: $e");
-      print(stack);
+    } catch (e) {
       throw ServerException(message: 'Something went wrong in Flutter');
     }
   }
