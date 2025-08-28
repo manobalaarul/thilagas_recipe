@@ -1,4 +1,4 @@
-package com.example.thilagas_recipe
+package com.thilagas.recipe_app
 
 import io.flutter.embedding.android.FlutterActivity
 

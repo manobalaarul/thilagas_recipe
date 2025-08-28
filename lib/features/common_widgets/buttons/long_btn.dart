@@ -4,7 +4,7 @@ import '../../../core/constants/app_colors.dart';
 enum RoundButtonType { bgPrimary, textPrimary }
 
 class LongBtn extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String title;
   final double fontSize;
   final RoundButtonType type;

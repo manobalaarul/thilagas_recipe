@@ -1,10 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:thilagas_recipe/features/data/repository/user/user_repository_impl.dart';
-import 'package:thilagas_recipe/features/domain/repository/user/user_repository.dart';
-import 'package:thilagas_recipe/features/domain/usecases/user/fetch_user_usecase.dart';
-import 'package:thilagas_recipe/features/domain/usecases/user/get_address_usecase.dart';
-import 'package:thilagas_recipe/features/domain/usecases/user/update_user_usecase.dart';
-import 'package:thilagas_recipe/features/presentation/bloc/user_bloc/user_bloc.dart';
 
 import '../core/network/dio_client.dart';
 import '../features/data/remote/datasource/auth/auth_remote_datasource.dart';
@@ -12,6 +6,7 @@ import '../features/data/remote/datasource/cart/cart_remote_datasource.dart';
 import '../features/data/remote/datasource/category/category_remote_datasource.dart';
 import '../features/data/remote/datasource/offers/offers_remote_datasource.dart';
 import '../features/data/remote/datasource/product/product_remote_datasource.dart';
+import '../features/data/remote/datasource/razorpay/razorpay_remote_datasource.dart';
 import '../features/data/remote/datasource/user/user_remote_datasource.dart';
 import '../features/data/remote/datasource/wishlist/wishlist_remote_datasource.dart';
 import '../features/data/repository/auth/auth_repository_impl.dart';
@@ -19,12 +14,16 @@ import '../features/data/repository/cart/cart_repository_impl.dart';
 import '../features/data/repository/category/category_repository_impl.dart';
 import '../features/data/repository/offers/offer_repository_impl.dart';
 import '../features/data/repository/product/product_repository_impl.dart';
+import '../features/data/repository/razorpay/razorpay_repository_impl.dart';
+import '../features/data/repository/user/user_repository_impl.dart';
 import '../features/data/repository/wishlist/wishlist_repository_impl.dart';
 import '../features/domain/repository/auth/auth_repository.dart';
 import '../features/domain/repository/cart/cart_repository.dart';
 import '../features/domain/repository/category/category_repository.dart';
 import '../features/domain/repository/offers/offer_repository.dart';
 import '../features/domain/repository/product/product_repository.dart';
+import '../features/domain/repository/razorpay/payment_repository.dart';
+import '../features/domain/repository/user/user_repository.dart';
 import '../features/domain/repository/wishlist/wishlist_repository.dart';
 import '../features/domain/usecases/auth/login_usecase.dart';
 import '../features/domain/usecases/auth/register_usecase.dart';
@@ -38,6 +37,12 @@ import '../features/domain/usecases/offers/get_offer_usecase.dart';
 import '../features/domain/usecases/product/get_category_product_usecase.dart';
 import '../features/domain/usecases/product/get_product_usecase.dart';
 import '../features/domain/usecases/product/get_search_product_usecase.dart';
+import '../features/domain/usecases/razorpay/create_order_usecase.dart';
+import '../features/domain/usecases/razorpay/verify_order_usecase.dart';
+import '../features/domain/usecases/user/fetch_user_usecase.dart';
+import '../features/domain/usecases/user/get_address_usecase.dart';
+import '../features/domain/usecases/user/get_orders_usecase.dart';
+import '../features/domain/usecases/user/update_user_usecase.dart';
 import '../features/domain/usecases/wishlist/add_wishlist_usecase.dart';
 import '../features/domain/usecases/wishlist/get_wishlist_usecase.dart';
 import '../features/domain/usecases/wishlist/remove_wishlist_usecase.dart';
@@ -48,6 +53,8 @@ import '../features/presentation/bloc/login/login_bloc.dart';
 import '../features/presentation/bloc/login_check_bloc/logincheck_bloc.dart';
 import '../features/presentation/bloc/offer_bloc/offer_bloc.dart';
 import '../features/presentation/bloc/product_bloc/product_bloc.dart';
+import '../features/presentation/bloc/razorpay_bloc/razorpay_bloc.dart';
+import '../features/presentation/bloc/user_bloc/user_bloc.dart';
 import '../features/presentation/bloc/wishlist_bloc/wishlist_bloc.dart';
 
 final sl = GetIt.instance;
@@ -69,6 +76,7 @@ class DiModule {
         sl<DeleteCartUsecase>()));
     sl.registerFactory(() => WishlistBloc(sl<GetWishlistUsecase>(),
         sl<AddWishlistUsecase>(), sl<RemoveWishlistUsecase>()));
+    sl.registerFactory(() => RazorpayBloc(sl(), sl()));
 
     //Usecase
     sl.registerLazySingleton(() => GetOfferUsecase(sl()));
@@ -89,6 +97,9 @@ class DiModule {
     sl.registerLazySingleton(() => FetchUserUsecase(sl()));
     sl.registerLazySingleton(() => UpdateUserUsecase(sl()));
     sl.registerLazySingleton(() => GetAddressUsecase(sl()));
+    sl.registerLazySingleton(() => GetOrderUsecase(sl()));
+    sl.registerLazySingleton(() => CreateOrderUsecase(sl()));
+    sl.registerLazySingleton(() => VerifyPaymentUsecase(sl()));
 
     //Repository
     sl.registerLazySingleton<OfferRepository>(
@@ -105,6 +116,8 @@ class DiModule {
         () => WishlistRepositoryImpl(wishlistRemoteDatasource: sl()));
     sl.registerLazySingleton<UserRepository>(
         () => UserRepositoryImpl(userRemoteDatasource: sl()));
+    sl.registerLazySingleton<RazorpayRepository>(
+        () => RazorpayRepositoryImpl(razorpayRemoteDatasource: sl()));
 
     //Datasource
     sl.registerLazySingleton<OffersRemoteDatasource>(
@@ -121,6 +134,8 @@ class DiModule {
         () => WishlistRemoteDatasourceImpl(dioClient: sl()));
     sl.registerLazySingleton<UserRemoteDatasource>(
         () => UserRemoteDatasourceImpl(dioClient: sl()));
+    sl.registerLazySingleton<RazorpayRemoteDatasource>(
+        () => RazorpayRemoteDatasourceImpl(dioClient: sl()));
 
     //Core
     sl.registerLazySingleton(() => DioClient());
