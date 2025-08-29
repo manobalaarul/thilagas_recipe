@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:thilagas_recipe/features/presentation/screens/profile/address/my_address.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../common_widgets/appbar/custom_appbar.dart';
@@ -12,6 +14,7 @@ import '../../../domain/entities/razorpay/razorpay_entity.dart';
 import '../../bloc/cart_bloc/cart_bloc.dart';
 import '../../bloc/login_check_bloc/logincheck_bloc.dart';
 import '../../bloc/razorpay_bloc/razorpay_bloc.dart';
+import '../../bloc/select_address_bloc/select_address_bloc.dart';
 import '../../utils/display_in_rupees.dart';
 import 'widgets/cart_card.dart';
 import 'widgets/cart_loader.dart';
@@ -57,9 +60,36 @@ class _CartPageState extends State<CartPage> {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
+    String errorMessage;
+
+    // Check for specific error codes
+    switch (response.code) {
+      case Razorpay.PAYMENT_CANCELLED:
+        errorMessage = 'Payment was cancelled. You pressed the back button.';
+        break;
+      case Razorpay.NETWORK_ERROR:
+        errorMessage =
+            'Network error occurred. Please check your internet connection.';
+        break;
+      case Razorpay.INVALID_OPTIONS:
+        errorMessage = 'Invalid payment options provided.';
+        break;
+      case Razorpay.TLS_ERROR:
+        errorMessage = 'TLS error occurred. Please try again.';
+        break;
+      case Razorpay.INCOMPATIBLE_PLUGIN:
+        errorMessage = 'Incompatible plugin version.';
+        break;
+      case Razorpay.UNKNOWN_ERROR:
+      default:
+        errorMessage =
+            response.message ?? 'An unknown error occurred during payment.';
+        break;
+    }
+
     context.read<RazorpayBloc>().add(
           PaymentFailedEvent(
-            errorMessage: response.message ?? 'Payment failed',
+            errorMessage: errorMessage,
           ),
         );
   }
@@ -142,7 +172,7 @@ class _CartPageState extends State<CartPage> {
               Navigator.of(context).pop();
               context.read<RazorpayBloc>().add(const ResetPaymentEvent());
             },
-            child: const Text('Try Again'),
+            child: const Text('Close'),
           ),
         ],
       ),
@@ -246,10 +276,7 @@ class _CartPageState extends State<CartPage> {
                   } else if (state.status == PaymentStatus.paymentFailed ||
                       state.status == PaymentStatus.error) {
                     _showErrorDialog(
-                        context,
-                        state.errorMsg == "undefined"
-                            ? "Payment failed because you pressed back!."
-                            : "state.errorMsg");
+                        context, state.errorMsg ?? "An unknown error occurred");
                   }
                 },
                 builder: (context, razorState) {
@@ -259,117 +286,185 @@ class _CartPageState extends State<CartPage> {
                         return const SizedBox.shrink();
                       }
 
-                      return BlocBuilder<CartBloc, CartState>(
-                        builder: (context, cartState) {
-                          if (cartState.status != CartStatus.loaded ||
-                              cartState.cart == null ||
-                              cartState.cart!.cart.isEmpty) {
-                            return const SizedBox.shrink();
-                          }
+                      return BlocBuilder<SelectAddressBloc, SelectAddressState>(
+                          builder: (context, addressState) {
+                        return BlocBuilder<CartBloc, CartState>(
+                          builder: (context, cartState) {
+                            if (cartState.status != CartStatus.loaded ||
+                                cartState.cart == null ||
+                                cartState.cart!.cart.isEmpty) {
+                              return const SizedBox.shrink();
+                            }
 
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: isDarkTheme
-                                  ? const Color(0xFF232323)
-                                  : Colors.white,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                            ),
-                            padding: const EdgeInsets.all(10),
-                            width: media.width,
-                            child: Column(
+                            return Column(
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('Sub Total',
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold)),
-                                    Text(
-                                      displayPriceInRupees(
-                                          cartState.subTotal.toInt()),
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppLightColor.primary,
-                                      ),
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: AppLightColor.primary,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
                                     ),
-                                  ],
-                                ),
-                                SizedBox(height: media.height / 70),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('Total Quantity',
-                                        style: TextStyle(fontSize: 17)),
-                                    Text(cartState.totalQty.toString(),
-                                        style: const TextStyle(fontSize: 17)),
-                                  ],
-                                ),
-                                SizedBox(height: media.height / 70),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('Delivery Charge',
-                                        style: TextStyle(fontSize: 17)),
-                                    Text('Pending',
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            color: AppLightColor.primary)),
-                                  ],
-                                ),
-                                SizedBox(height: media.height / 70),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('Total',
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.bold)),
-                                    Text(
-                                      displayPriceInRupees(
-                                          cartState.total.toInt()),
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppDarkColor.primary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: media.height / 70),
-                                LongBtn(
-                                  onPressed: razorState.status ==
-                                          PaymentStatus.creatingOrder
-                                      ? null
-                                      : () {
-                                          context.read<RazorpayBloc>().add(
-                                                CreateOrderEvent(
-                                                  amount: cartState.total
-                                                      .toDouble(),
-                                                  receipt:
-                                                      'order_${DateTime.now().millisecondsSinceEpoch}',
+                                  ),
+                                  width: media.width,
+                                  child: addressState.address != null
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  width: media.width / 2,
+                                                  child: Text(
+                                                      addressState
+                                                          .address!.addressLine,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.white)),
                                                 ),
-                                              );
-                                        },
-                                  title: razorState.status ==
-                                          PaymentStatus.creatingOrder
-                                      ? "Processing..."
-                                      : "Proceed to Checkout",
-                                  fontSize: 20,
+                                                Text(
+                                                    "${addressState.address!.city},${addressState.address!.state},${addressState.address!.pincode}",
+                                                    style: const TextStyle(
+                                                        fontSize: 13,
+                                                        color: Colors.white)),
+                                              ],
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Get.to(const MyAddress(
+                                                    title: "Select Address"));
+                                              },
+                                              child:
+                                                  const Text("Change Address"),
+                                            )
+                                          ],
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            Get.to(const MyAddress(
+                                                title: "Select Address"));
+                                          },
+                                          child: const Center(
+                                            child: Text(
+                                              "Select Address",
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  color: Colors.white),
+                                            ),
+                                          )),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: isDarkTheme
+                                        ? const Color(0xFF232323)
+                                        : Colors.white,
+                                  ),
+                                  padding: const EdgeInsets.all(10),
+                                  width: media.width,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text('Sub Total',
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold)),
+                                          Text(
+                                            displayPriceInRupees(
+                                                cartState.subTotal.toInt()),
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppLightColor.primary,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: media.height / 70),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text('Total Quantity',
+                                              style: TextStyle(fontSize: 17)),
+                                          Text(cartState.totalQty.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 17)),
+                                        ],
+                                      ),
+                                      SizedBox(height: media.height / 70),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text('Delivery Charge',
+                                              style: TextStyle(fontSize: 17)),
+                                          Text('Pending',
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  color:
+                                                      AppLightColor.primary)),
+                                        ],
+                                      ),
+                                      SizedBox(height: media.height / 70),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text('Total',
+                                              style: TextStyle(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold)),
+                                          Text(
+                                            displayPriceInRupees(
+                                                cartState.total.toInt()),
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppDarkColor.primary,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: media.height / 70),
+                                      LongBtn(
+                                        onPressed: razorState.status ==
+                                                PaymentStatus.creatingOrder
+                                            ? null
+                                            : () {
+                                                context
+                                                    .read<RazorpayBloc>()
+                                                    .add(
+                                                      CreateOrderEvent(
+                                                        amount: cartState.total
+                                                            .toDouble(),
+                                                        receipt:
+                                                            'order_${DateTime.now().millisecondsSinceEpoch}',
+                                                      ),
+                                                    );
+                                              },
+                                        title: razorState.status ==
+                                                PaymentStatus.creatingOrder
+                                            ? "Processing..."
+                                            : "Proceed to Checkout",
+                                        fontSize: 20,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
-                            ),
-                          );
-                        },
-                      );
+                            );
+                          },
+                        );
+                      });
                     },
                   );
                 },

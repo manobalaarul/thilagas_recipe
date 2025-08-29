@@ -44,6 +44,7 @@ class UserState {
         fetchStatus: fetchStatus ?? this.fetchStatus,
         updateUserStatus: updateUserStatus ?? this.updateUserStatus,
         getAddressStatus: getAddressStatus ?? this.getAddressStatus,
+        getOrderStatus: getOrderStatus ?? this.getOrderStatus,
         user: user ?? this.user,
         address: address ?? this.address,
         order: order ?? this.order,

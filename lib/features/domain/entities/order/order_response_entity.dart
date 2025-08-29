@@ -43,7 +43,7 @@ class Order {
   @JsonKey(name: "_id")
   String id;
   @JsonKey(name: "userId")
-  UserId userId;
+  String userId;
   @JsonKey(name: "orderId")
   String orderId;
   @JsonKey(name: "products")
@@ -239,72 +239,4 @@ class VariantDetails {
       _$VariantDetailsFromJson(json);
 
   Map<String, dynamic> toJson() => _$VariantDetailsToJson(this);
-}
-
-@JsonSerializable()
-class UserId {
-  @JsonKey(name: "_id")
-  String id;
-  @JsonKey(name: "name")
-  String name;
-  @JsonKey(name: "email")
-  String email;
-  @JsonKey(name: "password")
-  String password;
-  @JsonKey(name: "avatar")
-  String avatar;
-  @JsonKey(name: "mobile")
-  int mobile;
-  @JsonKey(name: "refresh_token")
-  String refreshToken;
-  @JsonKey(name: "verify_email")
-  bool verifyEmail;
-  @JsonKey(name: "last_login_date")
-  DateTime lastLoginDate;
-  @JsonKey(name: "status")
-  String status;
-  @JsonKey(name: "address_details")
-  List<String> addressDetails;
-  @JsonKey(name: "shopping_cart")
-  List<String> shoppingCart;
-  @JsonKey(name: "wishlist")
-  List<String> wishlist;
-  @JsonKey(name: "order_history")
-  List<dynamic> orderHistory;
-  @JsonKey(name: "role")
-  String role;
-  @JsonKey(name: "__v")
-  int v;
-  @JsonKey(name: "updatedAt")
-  DateTime updatedAt;
-  @JsonKey(name: "blogs")
-  List<String> blogs;
-  @JsonKey(name: "gstNo")
-  String gstNo;
-
-  UserId({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.password,
-    required this.avatar,
-    required this.mobile,
-    required this.refreshToken,
-    required this.verifyEmail,
-    required this.lastLoginDate,
-    required this.status,
-    required this.addressDetails,
-    required this.shoppingCart,
-    required this.wishlist,
-    required this.orderHistory,
-    required this.role,
-    required this.v,
-    required this.updatedAt,
-    required this.blogs,
-    required this.gstNo,
-  });
-
-  factory UserId.fromJson(Map<String, dynamic> json) => _$UserIdFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UserIdToJson(this);
 }

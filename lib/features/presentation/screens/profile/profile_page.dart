@@ -61,7 +61,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       icon: Icons.map,
                       title: 'Manage Address',
                       onTap: () {
-                        Get.to(() => const MyAddress());
+                        Get.to(() => const MyAddress(
+                              title: "My Address",
+                            ));
                       },
                     ),
                     ProfileOption(

@@ -10,7 +10,8 @@ import '../../../../common_widgets/design/no_data.dart';
 import 'add_address.dart';
 
 class MyAddress extends StatefulWidget {
-  const MyAddress({super.key});
+  final String title;
+  const MyAddress({super.key, required this.title});
 
   @override
   State<MyAddress> createState() => _MyAddressState();
@@ -35,8 +36,8 @@ class _MyAddressState extends State<MyAddress> {
               child: ListView(
                 padding: const EdgeInsets.all(10),
                 children: [
-                  const CustomAppBar(
-                    title: 'My Address',
+                  CustomAppBar(
+                    title: widget.title,
                     needBack: true,
                   ),
                   const SizedBox(

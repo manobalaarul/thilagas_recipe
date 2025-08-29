@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:thilagas_recipe/features/common_widgets/buttons/long_btn.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../domain/entities/cart/cart_response_entity.dart';
@@ -126,7 +127,7 @@ class AddToCartBtn extends StatelessWidget {
               );
             } else {
               return design
-                  ? ElevatedButton(
+                  ? LongBtn(
                       onPressed: () {
                         if (loginState.status ==
                             LogincheckStatus.unauthenticated) {
@@ -138,13 +139,8 @@ class AddToCartBtn extends StatelessWidget {
                                   productId: productId, variant: variant),
                             );
                       },
-                      child: isLoading
-                          ? const SizedBox(
-                              width: 15,
-                              height: 15,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Text('Add to Cart'),
+                      title: isLoading ? "Loading.." : "Add to Cart",
+                      fontSize: 17,
                     )
                   : InkWell(
                       onTap: () {

@@ -21,4 +21,5 @@ class ApiRoutes {
   static const String getOrders = 'order/get_orders';
   static const String createOrder = 'order/create_online_order';
   static const String placeOrder = 'order/place_online_order';
+  static const String getDeliveryCharge = 'delivery_charge/get_delivery_charge';
 }

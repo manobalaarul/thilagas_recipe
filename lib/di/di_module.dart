@@ -54,6 +54,7 @@ import '../features/presentation/bloc/login_check_bloc/logincheck_bloc.dart';
 import '../features/presentation/bloc/offer_bloc/offer_bloc.dart';
 import '../features/presentation/bloc/product_bloc/product_bloc.dart';
 import '../features/presentation/bloc/razorpay_bloc/razorpay_bloc.dart';
+import '../features/presentation/bloc/select_address_bloc/select_address_bloc.dart';
 import '../features/presentation/bloc/user_bloc/user_bloc.dart';
 import '../features/presentation/bloc/wishlist_bloc/wishlist_bloc.dart';
 
@@ -77,6 +78,7 @@ class DiModule {
     sl.registerFactory(() => WishlistBloc(sl<GetWishlistUsecase>(),
         sl<AddWishlistUsecase>(), sl<RemoveWishlistUsecase>()));
     sl.registerFactory(() => RazorpayBloc(sl(), sl()));
+    sl.registerFactory(() => SelectAddressBloc());
 
     //Usecase
     sl.registerLazySingleton(() => GetOfferUsecase(sl()));

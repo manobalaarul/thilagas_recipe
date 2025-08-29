@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:thilagas_recipe/features/common_widgets/buttons/variant_btn.dart';
+import 'package:thilagas_recipe/features/domain/entities/variant/variant_entity.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../common_widgets/appbar/custom_appbar.dart';
+import '../../../common_widgets/cart/add_to_cart_btn.dart';
 import '../../../common_widgets/product/product_image_slider.dart';
 import '../../../domain/entities/product/product_entity.dart';
 import '../../utils/display_in_rupees.dart';
@@ -20,6 +23,14 @@ class ProductView extends StatefulWidget {
 }
 
 class _ProductViewState extends State<ProductView> {
+  late Variant selectedVariant;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedVariant = widget.product.variants[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -49,8 +60,7 @@ class _ProductViewState extends State<ProductView> {
                     children: [
                       Text(
                         displayPriceInRupees(priceWithDiscount(
-                            widget.product.variants[0].price,
-                            widget.product.variants[0].discount)),
+                            selectedVariant.price, selectedVariant.discount)),
                         style: TextStyle(
                           fontSize: 27,
                           fontWeight: FontWeight.w700,
@@ -59,7 +69,7 @@ class _ProductViewState extends State<ProductView> {
                       ),
                       const SizedBox(width: 5),
                       Text(
-                        displayPriceInRupees(widget.product.variants[0].price),
+                        displayPriceInRupees(selectedVariant.price),
                         style: const TextStyle(
                           fontSize: 18,
                           color: Colors.grey,
@@ -67,6 +77,21 @@ class _ProductViewState extends State<ProductView> {
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(height: media.height / 90),
+                  Row(
+                    children: widget.product.variants
+                        .map((variant) => VariantBtn(
+                              variant: variant,
+                              isSelected: selectedVariant.id == variant.id,
+                              onTap: () {
+                                print(variant.name);
+                                setState(() {
+                                  selectedVariant = variant; // update selection
+                                });
+                              },
+                            ))
+                        .toList(),
                   ),
                   SizedBox(height: media.height / 90),
                   const Text(
@@ -143,15 +168,15 @@ class _ProductViewState extends State<ProductView> {
               ),
             ),
             // Add to Cart button at the bottom
-            // Container(
-            //   width: double.infinity,
-            //   padding: const EdgeInsets.all(10),
-            //   color: Colors.white, // Optional: Background color for visibility
-            //   child: AddToCartBtn(
-            //     product: widget.product,
-            //     design: true,
-            //   ),
-            // ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              child: AddToCartBtn(
+                productId: widget.product.id,
+                design: true,
+                variant: selectedVariant,
+              ),
+            ),
           ],
         ),
       ),

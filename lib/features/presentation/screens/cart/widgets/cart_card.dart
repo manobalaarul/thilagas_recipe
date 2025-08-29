@@ -103,8 +103,8 @@ class _CartCardState extends State<CartCard> {
                       children: [
                         Text(
                           displayPriceInRupees(priceWithDiscount(
-                            widget.item.productId.variants[0].price,
-                            widget.item.productId.variants[0].discount,
+                            widget.variant.price,
+                            widget.variant.discount,
                           )),
                           style: TextStyle(
                             fontSize: 18,

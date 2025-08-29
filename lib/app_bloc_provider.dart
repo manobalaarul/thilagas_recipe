@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nested/nested.dart';
 import 'package:thilagas_recipe/features/presentation/bloc/razorpay_bloc/razorpay_bloc.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/select_address_bloc/select_address_bloc.dart';
 import 'package:thilagas_recipe/features/presentation/bloc/user_bloc/user_bloc.dart';
 
 import 'core/theme/bloc/theme_bloc.dart';
@@ -42,6 +43,7 @@ class AppBlocProvider {
             ..add(GetAddressEvent())
             ..add(GetOrderEvent())),
       BlocProvider<RazorpayBloc>(create: (context) => RazorpayBloc(sl(), sl())),
+      BlocProvider<SelectAddressBloc>(create: (context) => SelectAddressBloc()),
     ];
   }
 }
