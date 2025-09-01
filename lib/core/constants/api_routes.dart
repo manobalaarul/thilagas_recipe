@@ -18,6 +18,9 @@ class ApiRoutes {
   static const String updateUserDetails = 'user/update_user_details';
   static const String fetchUserDetails = 'user/fetch_user_details';
   static const String getAddress = 'address/get_address';
+  static const String addAddress = 'address/add_address';
+  static const String pupdateAddress = 'address/update_address';
+  static const String deleteAddress = 'address/delete_address';
   static const String getOrders = 'order/get_orders';
   static const String createOrder = 'order/create_online_order';
   static const String placeOrder = 'order/place_online_order';

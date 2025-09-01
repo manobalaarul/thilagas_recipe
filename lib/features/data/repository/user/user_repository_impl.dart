@@ -59,4 +59,28 @@ class UserRepositoryImpl implements UserRepository {
       return const Left(ServerFailure(message: 'Unexpected error'));
     }
   }
+
+  @override
+  Future<Either<Failure, CommonResponseEntity>> addAddress(params) async {
+    try {
+      final addAddress = await userRemoteDatasource.addAddress(params);
+      return Right(addAddress);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return const Left(ServerFailure(message: 'Unexpected error'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CommonResponseEntity>> deleteAddress(params) {
+    // TODO: implement deleteAddress
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, CommonResponseEntity>> updateAddress(params) {
+    // TODO: implement updateAddress
+    throw UnimplementedError();
+  }
 }

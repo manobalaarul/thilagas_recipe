@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:thilagas_recipe/features/common_widgets/buttons/long_btn.dart';
+import 'package:thilagas_recipe/features/presentation/screens/auth/login_page.dart';
 
 class AskLogin extends StatelessWidget {
   final String data;
@@ -28,6 +31,13 @@ class AskLogin extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        const SizedBox(height: 10),
+        LongBtn(
+            onPressed: () {
+              Get.to(const Loginpage());
+            },
+            title: 'Login Now',
+            fontSize: 17)
       ],
     );
   }

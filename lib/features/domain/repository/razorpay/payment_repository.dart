@@ -7,4 +7,5 @@ abstract class RazorpayRepository {
   Future<Either<Failure, RazorpayOrderEntity>> createRazorpayOrder(
       dynamic params);
   Future<Either<Failure, OrderEntity>> verifyAndPlaceOrder(dynamic params);
+  Future<Either<Failure, Map<String, dynamic>>> getDeliveryCharge(dynamic params);
 }

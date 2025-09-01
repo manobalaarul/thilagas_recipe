@@ -12,4 +12,7 @@ abstract class UserRepository {
       dynamic params);
   Future<Either<Failure, AddressResponseEntity>> getAddress(dynamic params);
   Future<Either<Failure, OrderResponseEntity>> getOrders(dynamic params);
+  Future<Either<Failure, CommonResponseEntity>> addAddress(dynamic params);
+  Future<Either<Failure, CommonResponseEntity>> updateAddress(dynamic params);
+  Future<Either<Failure, CommonResponseEntity>> deleteAddress(dynamic params);
 }

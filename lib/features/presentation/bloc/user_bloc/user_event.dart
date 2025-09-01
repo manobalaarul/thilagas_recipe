@@ -17,4 +17,21 @@ class UpdateUserEvent extends UserEvent {
 
 class GetAddressEvent extends UserEvent {}
 
+class AddAddressEvent extends UserEvent {
+  final String addressLine;
+  final String city;
+  final String state;
+  final String pincode;
+  final String country;
+  final String mobile;
+
+  AddAddressEvent(
+      {required this.addressLine,
+      required this.city,
+      required this.state,
+      required this.pincode,
+      required this.country,
+      required this.mobile});
+}
+
 class GetOrderEvent extends UserEvent {}

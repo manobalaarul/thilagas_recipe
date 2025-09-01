@@ -1,16 +1,19 @@
 import 'package:dio/dio.dart';
-import 'package:thilagas_recipe/features/data/remote/model/address/address_model.dart';
-import 'package:thilagas_recipe/features/data/remote/model/common/common_response_model.dart';
-import 'package:thilagas_recipe/features/data/remote/model/order/order_model.dart';
 
 import '../../../../../core/constants/api_routes.dart';
 import '../../../../../core/errors/exceptions.dart';
 import '../../../../../core/network/dio_client.dart';
+import '../../model/address/address_model.dart';
+import '../../model/common/common_response_model.dart';
+import '../../model/order/order_model.dart';
 
 abstract class UserRemoteDatasource {
   Future<CommonResponseModel> updateUserDetaiils(dynamic params);
   Future<CommonResponseModel> fetchUserDetails(dynamic params);
   Future<AddressModel> getAddress(dynamic params);
+  Future<CommonResponseModel> addAddress(dynamic params);
+  Future<CommonResponseModel> updateAddress(dynamic params);
+  Future<CommonResponseModel> deleteAddress(dynamic params);
   Future<OrderModel> getOrders(dynamic params);
 }
 
@@ -87,5 +90,34 @@ class UserRemoteDatasourceImpl implements UserRemoteDatasource {
       print("Api Error : $stack");
       throw ServerException(message: 'Something went wrong');
     }
+  }
+
+  @override
+  Future<CommonResponseModel> addAddress(params) async {
+    try {
+      final response = await dioClient.post(path: ApiRoutes.addAddress);
+      print(response.data);
+      final addAddress = CommonResponseModel.fromJson(response.data);
+      return addAddress;
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.response?.data['message'] ?? 'Something went wrong',
+      );
+    } catch (e, stack) {
+      print("Api Error : $stack");
+      throw ServerException(message: 'Something went wrong');
+    }
+  }
+
+  @override
+  Future<CommonResponseModel> deleteAddress(params) {
+    // TODO: implement deleteAddress
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<CommonResponseModel> updateAddress(params) {
+    // TODO: implement updateAddress
+    throw UnimplementedError();
   }
 }

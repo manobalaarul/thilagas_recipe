@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import '../../../../common_widgets/textfield/apptextformfield.dart';
-import '../../../../domain/entities/address/address_response_entity.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/user_bloc/user_bloc.dart';
+
 import '../../../../common_widgets/appbar/custom_appbar.dart';
 import '../../../../common_widgets/buttons/long_btn.dart';
+import '../../../../common_widgets/textfield/apptextformfield.dart';
+import '../../../../domain/entities/address/address_response_entity.dart';
 
 class AddAddress extends StatefulWidget {
   final Address? existingAddress; // ✅ Nullable parameter for edit mode
@@ -15,7 +18,6 @@ class AddAddress extends StatefulWidget {
 }
 
 class _AddAddressState extends State<AddAddress> {
-
   late TextEditingController addressLineController;
   late TextEditingController cityController;
   late TextEditingController stateController;
@@ -47,33 +49,47 @@ class _AddAddressState extends State<AddAddress> {
         TextEditingController(text: widget.existingAddress?.mobile ?? '');
   }
 
-  // void saveAddress() async {
-  //   setState(() => loading = true);
+  void saveAddress() async {
+    setState(() => loading = true);
 
-  //   try {
-  //     AddressModel address = AddressModel(
-  //       id: widget.existingAddress?.id ?? "", // ✅ Keep existing ID if editing
-  //       addressLine: addressLineController.text,
-  //       city: cityController.text,
-  //       state: stateController.text,
-  //       pincode: pincodeController.text,
-  //       country: countryController.text,
-  //       mobile: mobileController.text,
-  //       status: true,
-  //     );
+    try {
+      Map<String, dynamic> address = {
+        "id": widget.existingAddress?.id ?? "", // ✅ Keep existing ID if editing
+        "address_line": addressLineController.text,
+        "city": cityController.text,
+        "state": stateController.text,
+        "pincode": pincodeController.text,
+        "country": countryController.text,
+        "mobile": mobileController.text,
+        "status": true,
+      };
 
-  //     if (isEditing) {
-  //       await addressController.updateAddress(address);
-  //     } else {
-  //       await addressController.addAddress(address);
-  //     }
-  //     Navigator.pop(context);
-  //   } catch (e) {
-  //     print("Error: $e");
-  //   } finally {
-  //     setState(() => loading = false);
-  //   }
-  // }
+      if (isEditing) {
+        context.read<UserBloc>().add(AddAddressEvent(
+              addressLine: addressLineController.text,
+              city: cityController.text,
+              state: stateController.text,
+              pincode: pincodeController.text,
+              country: countryController.text,
+              mobile: mobileController.text,
+            ));
+      } else {
+        context.read<UserBloc>().add(AddAddressEvent(
+              addressLine: addressLineController.text,
+              city: cityController.text,
+              state: stateController.text,
+              pincode: pincodeController.text,
+              country: countryController.text,
+              mobile: mobileController.text,
+            ));
+      }
+      Navigator.pop(context);
+    } catch (e) {
+      print("Error: $e");
+    } finally {
+      setState(() => loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +122,9 @@ class _AddAddressState extends State<AddAddress> {
                         buildTextField("Mobile", mobileController),
                         SizedBox(height: media.height / 20),
                         LongBtn(
-                          onPressed: /* saveAddress */(){},
+                          onPressed: () {
+                            saveAddress();
+                          },
                           title: isEditing
                               ? 'Update'
                               : 'Submit', // ✅ Dynamic button text

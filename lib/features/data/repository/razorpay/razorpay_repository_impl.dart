@@ -81,4 +81,18 @@ class RazorpayRepositoryImpl implements RazorpayRepository {
       return const Left(ServerFailure(message: 'Unexpected error occurred'));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> getDeliveryCharge(
+      params) async {
+    try {
+      final response = await razorpayRemoteDatasource.getDeliveryCharge(params);
+
+      return Right(response);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return const Left(ServerFailure(message: 'Unexpected error occurred'));
+    }
+  }
 }

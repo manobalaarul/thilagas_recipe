@@ -6,12 +6,15 @@ enum UpdateUserStatus { initial, loading, loaded, error }
 
 enum GetAddressStatus { initial, loading, loaded, error }
 
+enum AddAddressStatus { initial, loading, loaded, error }
+
 enum GetOrderStatus { initial, loading, loaded, error }
 
 class UserState {
   final FetchUserStatus fetchStatus;
   final UpdateUserStatus updateUserStatus;
   final GetAddressStatus getAddressStatus;
+  final AddAddressStatus addAddressStatus;
   final GetOrderStatus getOrderStatus;
   final CommonResponseEntity? user;
   final AddressResponseEntity? address;
@@ -23,6 +26,7 @@ class UserState {
       {this.fetchStatus = FetchUserStatus.initial,
       this.updateUserStatus = UpdateUserStatus.initial,
       this.getAddressStatus = GetAddressStatus.initial,
+      this.addAddressStatus = AddAddressStatus.initial,
       this.getOrderStatus = GetOrderStatus.initial,
       this.user,
       this.address,
@@ -34,6 +38,7 @@ class UserState {
       {FetchUserStatus? fetchStatus,
       UpdateUserStatus? updateUserStatus,
       GetAddressStatus? getAddressStatus,
+      AddAddressStatus? addAddressStatus,
       GetOrderStatus? getOrderStatus,
       final CommonResponseEntity? user,
       final AddressResponseEntity? address,
@@ -44,6 +49,7 @@ class UserState {
         fetchStatus: fetchStatus ?? this.fetchStatus,
         updateUserStatus: updateUserStatus ?? this.updateUserStatus,
         getAddressStatus: getAddressStatus ?? this.getAddressStatus,
+        addAddressStatus: addAddressStatus ?? this.addAddressStatus,
         getOrderStatus: getOrderStatus ?? this.getOrderStatus,
         user: user ?? this.user,
         address: address ?? this.address,
