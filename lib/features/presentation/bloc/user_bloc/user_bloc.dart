@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:thilagas_recipe/features/domain/usecases/user/delete_address_usecase.dart';
 
 import '../../../domain/entities/address/address_response_entity.dart';
 import '../../../domain/entities/common/common_response_entity.dart';
@@ -19,15 +20,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final GetAddressUsecase getAddressUsecase;
   final AddAddressUsecase addAddressUsecase;
   final GetOrderUsecase getOrderUsecase;
+  final DeleteAddressUsecase deleteAddressUsecase;
 
-  UserBloc(this.fetchUserUsecase, this.updateUserUsecase,
-      this.getAddressUsecase, this.getOrderUsecase, this.addAddressUsecase)
+  UserBloc(
+      this.fetchUserUsecase,
+      this.updateUserUsecase,
+      this.getAddressUsecase,
+      this.getOrderUsecase,
+      this.addAddressUsecase,
+      this.deleteAddressUsecase)
       : super(UserState()) {
     on<FetchUserEvent>(_fetchUser);
     on<UpdateUserEvent>(_updateUser);
     on<GetAddressEvent>(_getAddress);
     on<AddAddressEvent>(_addAddress);
     on<GetOrderEvent>(_getOrder);
+    on<DeleteAddressEvent>(_deleteAddress);
   }
 
   _fetchUser(FetchUserEvent event, Emitter<UserState> emit) async {
@@ -116,6 +124,29 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }, (loadedUser) {
       emit(state.copyWith(
           addAddressStatus: AddAddressStatus.loaded,
+          successMsg: loadedUser.message));
+      add(GetAddressEvent());
+      Fluttertoast.showToast(
+        msg: loadedUser.message,
+        toastLength: Toast.LENGTH_LONG,
+      );
+    });
+  }
+
+  _deleteAddress(DeleteAddressEvent event, Emitter<UserState> emit) async {
+    emit(state.copyWith(deleteAddressStatus: DeleteAddressStatus.loading));
+
+    final result = await deleteAddressUsecase.call({
+      "_id": event.id,
+    });
+
+    result.fold((failure) {
+      emit(state.copyWith(
+          deleteAddressStatus: DeleteAddressStatus.error,
+          errorMsg: failure.message));
+    }, (loadedUser) {
+      emit(state.copyWith(
+          deleteAddressStatus: DeleteAddressStatus.loaded,
           successMsg: loadedUser.message));
       add(GetAddressEvent());
       Fluttertoast.showToast(

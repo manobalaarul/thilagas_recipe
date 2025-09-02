@@ -8,6 +8,8 @@ enum GetAddressStatus { initial, loading, loaded, error }
 
 enum AddAddressStatus { initial, loading, loaded, error }
 
+enum DeleteAddressStatus { initial, loading, loaded, error }
+
 enum GetOrderStatus { initial, loading, loaded, error }
 
 class UserState {
@@ -15,6 +17,7 @@ class UserState {
   final UpdateUserStatus updateUserStatus;
   final GetAddressStatus getAddressStatus;
   final AddAddressStatus addAddressStatus;
+  final DeleteAddressStatus deleteAddressStatus;
   final GetOrderStatus getOrderStatus;
   final CommonResponseEntity? user;
   final AddressResponseEntity? address;
@@ -27,6 +30,7 @@ class UserState {
       this.updateUserStatus = UpdateUserStatus.initial,
       this.getAddressStatus = GetAddressStatus.initial,
       this.addAddressStatus = AddAddressStatus.initial,
+      this.deleteAddressStatus = DeleteAddressStatus.initial,
       this.getOrderStatus = GetOrderStatus.initial,
       this.user,
       this.address,
@@ -39,6 +43,7 @@ class UserState {
       UpdateUserStatus? updateUserStatus,
       GetAddressStatus? getAddressStatus,
       AddAddressStatus? addAddressStatus,
+      DeleteAddressStatus? deleteAddressStatus,
       GetOrderStatus? getOrderStatus,
       final CommonResponseEntity? user,
       final AddressResponseEntity? address,
@@ -50,6 +55,7 @@ class UserState {
         updateUserStatus: updateUserStatus ?? this.updateUserStatus,
         getAddressStatus: getAddressStatus ?? this.getAddressStatus,
         addAddressStatus: addAddressStatus ?? this.addAddressStatus,
+        deleteAddressStatus: deleteAddressStatus ?? this.deleteAddressStatus,
         getOrderStatus: getOrderStatus ?? this.getOrderStatus,
         user: user ?? this.user,
         address: address ?? this.address,

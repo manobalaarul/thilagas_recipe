@@ -38,7 +38,7 @@ class AppBlocProvider {
               WishlistBloc(sl(), sl(), sl())..add(GetWishlistEvent())),
       BlocProvider<LogincheckBloc>(create: (context) => LogincheckBloc()),
       BlocProvider<UserBloc>(
-          create: (context) => UserBloc(sl(), sl(), sl(), sl(), sl())
+          create: (context) => UserBloc(sl(), sl(), sl(), sl(), sl(), sl())
             ..add(FetchUserEvent())
             ..add(GetAddressEvent())
             ..add(GetOrderEvent())),

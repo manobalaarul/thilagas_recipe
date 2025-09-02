@@ -41,6 +41,7 @@ import '../features/domain/usecases/razorpay/create_order_usecase.dart';
 import '../features/domain/usecases/razorpay/get_delivery_charge_usecase.dart';
 import '../features/domain/usecases/razorpay/verify_order_usecase.dart';
 import '../features/domain/usecases/user/add_address_usecase.dart';
+import '../features/domain/usecases/user/delete_address_usecase.dart';
 import '../features/domain/usecases/user/fetch_user_usecase.dart';
 import '../features/domain/usecases/user/get_address_usecase.dart';
 import '../features/domain/usecases/user/get_orders_usecase.dart';
@@ -71,7 +72,7 @@ class DiModule {
     sl.registerFactory(() => AuthBloc(sl<RegisterUsecase>()));
     sl.registerFactory(() => LoginBloc(sl<LoginUsecase>()));
     sl.registerFactory(() => LogincheckBloc());
-    sl.registerFactory(() => UserBloc(sl(), sl(), sl(), sl(), sl()));
+    sl.registerFactory(() => UserBloc(sl(), sl(), sl(), sl(), sl(), sl()));
     sl.registerFactory(() => CartBloc(
         sl<GetCartUsecase>(),
         sl<AddCartUsecase>(),
@@ -102,6 +103,7 @@ class DiModule {
     sl.registerLazySingleton(() => UpdateUserUsecase(sl()));
     sl.registerLazySingleton(() => GetAddressUsecase(sl()));
     sl.registerLazySingleton(() => AddAddressUsecase(sl()));
+    sl.registerLazySingleton(() => DeleteAddressUsecase(sl()));
     sl.registerLazySingleton(() => GetOrderUsecase(sl()));
     sl.registerLazySingleton(() => CreateOrderUsecase(sl()));
     sl.registerLazySingleton(() => VerifyPaymentUsecase(sl()));

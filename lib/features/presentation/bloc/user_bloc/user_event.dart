@@ -34,4 +34,10 @@ class AddAddressEvent extends UserEvent {
       required this.mobile});
 }
 
+class DeleteAddressEvent extends UserEvent {
+  final String id;
+
+  DeleteAddressEvent({required this.id});
+}
+
 class GetOrderEvent extends UserEvent {}

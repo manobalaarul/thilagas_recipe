@@ -65,7 +65,10 @@ class _MyAddressState extends State<MyAddress> {
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: address.length,
                               itemBuilder: (context, index) {
-                                return AddressCard(item: address[index]);
+                                return AddressCard(
+                                  item: address[index],
+                                  showDel: true,
+                                );
                               },
                             );
                         }

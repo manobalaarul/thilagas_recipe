@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:thilagas_recipe/features/presentation/utils/calculate_totalkg.dart';
 
@@ -32,11 +33,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
   void initState() {
     super.initState();
     _initializeRazorpay();
-    final cartItems = context.read<CartBloc>().state.cart!.cart;
-    final address = context.read<SelectAddressBloc>().state.address;
-    context
-        .read<SelectAddressBloc>()
-        .add(SelectOneAddressEvent(address: address!, cartItems: cartItems));
   }
 
   void _initializeRazorpay() {
@@ -214,7 +210,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   switch (state.getAddressStatus) {
                     case GetAddressStatus.initial:
                     case GetAddressStatus.loading:
-                      return const CircularProgressIndicator();
+                      return Center(child: const CircularProgressIndicator());
                     case GetAddressStatus.error:
                       return Center(child: Text(state.errorMsg!));
                     case GetAddressStatus.loaded:
@@ -232,7 +228,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: address.length,
                             itemBuilder: (context, index) {
-                              return AddressCard(item: address[index]);
+                              return AddressCard(
+                                item: address[index],
+                                showDel: false,
+                              );
                             },
                           ),
                           SizedBox(
@@ -364,13 +363,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                               style: TextStyle(fontSize: 17)),
                                           // 🔑 Show loading or delivery charge with proper null handling
                                           isDeliveryChargeLoading
-                                              ? const SizedBox(
-                                                  width: 20,
-                                                  height: 20,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                          strokeWidth: 2),
-                                                )
+                                              ? const Text("Select Address")
                                               : hasSelectedAddress
                                                   ? Text(
                                                       displayPriceInRupees(
@@ -419,7 +412,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                         .creatingOrder ||
                                                 !hasSelectedAddress ||
                                                 isDeliveryChargeLoading)
-                                            ? null
+                                            ? () {
+                                                if (!hasSelectedAddress) {
+                                                  Fluttertoast.showToast(
+                                                    msg:
+                                                        "Select address to checkout!",
+                                                    toastLength:
+                                                        Toast.LENGTH_LONG,
+                                                  );
+                                                }
+                                              }
                                             : () {
                                                 final totalAmount =
                                                     cartState.total.toDouble() +

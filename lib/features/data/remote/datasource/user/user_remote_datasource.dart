@@ -111,9 +111,21 @@ class UserRemoteDatasourceImpl implements UserRemoteDatasource {
   }
 
   @override
-  Future<CommonResponseModel> deleteAddress(params) {
-    // TODO: implement deleteAddress
-    throw UnimplementedError();
+  Future<CommonResponseModel> deleteAddress(params) async {
+    try {
+      final response =
+          await dioClient.delete(path: ApiRoutes.deleteAddress, data: params);
+      print(response.data);
+      final addAddress = CommonResponseModel.fromJson(response.data);
+      return addAddress;
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.response?.data['message'] ?? 'Something went wrong',
+      );
+    } catch (e, stack) {
+      print("Api Error : $stack");
+      throw ServerException(message: 'Something went wrong');
+    }
   }
 
   @override

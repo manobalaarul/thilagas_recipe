@@ -73,9 +73,15 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, CommonResponseEntity>> deleteAddress(params) {
-    // TODO: implement deleteAddress
-    throw UnimplementedError();
+  Future<Either<Failure, CommonResponseEntity>> deleteAddress(params) async {
+    try {
+      final addAddress = await userRemoteDatasource.deleteAddress(params);
+      return Right(addAddress);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return const Left(ServerFailure(message: 'Unexpected error'));
+    }
   }
 
   @override
