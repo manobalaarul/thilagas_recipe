@@ -225,13 +225,20 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             child: NoData(data: "Your address list is empty"));
                       }
 
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: address.length,
-                        itemBuilder: (context, index) {
-                          return AddressCard(item: address[index]);
-                        },
+                      return Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: address.length,
+                            itemBuilder: (context, index) {
+                              return AddressCard(item: address[index]);
+                            },
+                          ),
+                          SizedBox(
+                            height: media.height / 3,
+                          )
+                        ],
                       );
                   }
                 })

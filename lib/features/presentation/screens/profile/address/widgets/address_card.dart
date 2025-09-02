@@ -51,12 +51,33 @@ class AddressCard extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: AppLightColor.primary,
                           borderRadius: BorderRadius.circular(5)),
-                      child: Text(
-                        item.city,
-                        style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            item.city,
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  )),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.blue,
+                                  )),
+                            ],
+                          )
+                        ],
                       ),
                     ),
                     SizedBox(

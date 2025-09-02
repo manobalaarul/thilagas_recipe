@@ -29,9 +29,7 @@ class _MyAddressState extends State<MyAddress> {
           children: [
             RefreshIndicator(
               onRefresh: () async {
-                await Future.wait([
-                  // addressController.fetchAddressItems(),
-                ]);
+                context.read<UserBloc>().add(GetAddressEvent());
               },
               child: ListView(
                 padding: const EdgeInsets.all(10),

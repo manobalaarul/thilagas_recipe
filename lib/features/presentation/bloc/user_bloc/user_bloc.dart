@@ -117,6 +117,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(state.copyWith(
           addAddressStatus: AddAddressStatus.loaded,
           successMsg: loadedUser.message));
+      add(GetAddressEvent());
       Fluttertoast.showToast(
         msg: loadedUser.message,
         toastLength: Toast.LENGTH_LONG,

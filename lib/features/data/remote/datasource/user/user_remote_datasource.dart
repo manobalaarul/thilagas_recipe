@@ -95,7 +95,8 @@ class UserRemoteDatasourceImpl implements UserRemoteDatasource {
   @override
   Future<CommonResponseModel> addAddress(params) async {
     try {
-      final response = await dioClient.post(path: ApiRoutes.addAddress);
+      final response =
+          await dioClient.post(path: ApiRoutes.addAddress, data: params);
       print(response.data);
       final addAddress = CommonResponseModel.fromJson(response.data);
       return addAddress;
