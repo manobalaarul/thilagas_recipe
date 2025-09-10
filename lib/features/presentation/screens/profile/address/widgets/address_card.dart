@@ -1,10 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:thilagas_recipe/features/common_widgets/design/confirm_delete_dialog.dart';
 import 'package:thilagas_recipe/features/presentation/bloc/cart_bloc/cart_bloc.dart';
 import 'package:thilagas_recipe/features/presentation/bloc/select_address_bloc/select_address_bloc.dart';
 
 import '../../../../../../core/constants/app_colors.dart';
 import '../../../../../domain/entities/address/address_response_entity.dart';
+import '../../../../bloc/user_bloc/user_bloc.dart';
 
 class AddressCard extends StatelessWidget {
   final Address item;
@@ -66,15 +69,36 @@ class AddressCard extends StatelessWidget {
                           showDel
                               ? Row(
                                   children: [
-                                    const Icon(
-                                      Icons.delete,
-                                      color: Colors.white,
-                                      size: 25,
+                                    IconButton(
+                                      onPressed: () {
+                                        showCupertinoDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              ConfirmDeleteDialog(
+                                            title: "Delete Address",
+                                            message:
+                                                "Are you sure you want to delete this address?",
+                                            onConfirm: () {
+                                              context.read<UserBloc>().add(
+                                                  DeleteAddressEvent(
+                                                      id: item.id));
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                        size: 25,
+                                      ),
                                     ),
-                                    const Icon(
-                                      Icons.edit,
-                                      color: Colors.white,
-                                      size: 25,
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Colors.white,
+                                        size: 25,
+                                      ),
                                     ),
                                   ],
                                 )
