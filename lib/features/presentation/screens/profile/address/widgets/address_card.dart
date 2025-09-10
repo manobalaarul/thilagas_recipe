@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thilagas_recipe/features/common_widgets/design/confirm_delete_dialog.dart';
 import 'package:thilagas_recipe/features/presentation/bloc/cart_bloc/cart_bloc.dart';
 import 'package:thilagas_recipe/features/presentation/bloc/select_address_bloc/select_address_bloc.dart';
 
 import '../../../../../../core/constants/app_colors.dart';
 import '../../../../../domain/entities/address/address_response_entity.dart';
-import '../../../../bloc/user_bloc/user_bloc.dart';
 
 class AddressCard extends StatelessWidget {
   final Address item;
@@ -69,87 +66,15 @@ class AddressCard extends StatelessWidget {
                           showDel
                               ? Row(
                                   children: [
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors
-                                            .transparent, // transparent background
-                                        foregroundColor:
-                                            Colors.white, // text/icon color
-                                        side: const BorderSide(
-                                            color: Colors.white,
-                                            width: 2), // white border
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              8), // adjust for rounded corners
-                                        ),
-                                        elevation: 0,
-                                        minimumSize: const Size(
-                                            40, 40), // 👈 ensures square shape
-                                        padding: EdgeInsets
-                                            .zero, // removes extra padding
-                                      ),
-                                      onPressed: () {
-                                        showCupertinoDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              ConfirmDeleteDialog(
-                                            title: "Delete Address",
-                                            message:
-                                                "Are you sure you want to delete this address?",
-                                            onConfirm: () {
-                                              context.read<UserBloc>().add(
-                                                  DeleteAddressEvent(
-                                                      id: item.id));
-                                            },
-                                          ),
-                                        );
-                                      },
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                        size: 25,
-                                      ),
+                                    const Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                      size: 25,
                                     ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors
-                                            .transparent, // transparent background
-                                        foregroundColor:
-                                            Colors.white, // text/icon color
-                                        side: const BorderSide(
-                                            color: Colors.white,
-                                            width: 2), // white border
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              8), // adjust for rounded corners
-                                        ),
-                                        elevation: 0,
-                                        minimumSize: const Size(
-                                            40, 40), // 👈 ensures square shape
-                                        padding: EdgeInsets
-                                            .zero, // removes extra padding
-                                      ),
-                                      onPressed: () {
-                                        showCupertinoDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              ConfirmDeleteDialog(
-                                            title: "Delete Address",
-                                            message:
-                                                "Are you sure you want to delete this address?",
-                                            onConfirm: () {
-                                              context.read<UserBloc>().add(
-                                                  DeleteAddressEvent(
-                                                      id: item.id));
-                                            },
-                                          ),
-                                        );
-                                      },
-                                      child: const Icon(
-                                        Icons.edit,
-                                        color: Colors.blue,
-                                        size: 25,
-                                      ),
+                                    const Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                      size: 25,
                                     ),
                                   ],
                                 )
