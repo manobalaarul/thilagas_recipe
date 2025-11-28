@@ -69,25 +69,7 @@ class AddressCard extends StatelessWidget {
                           showDel
                               ? Row(
                                   children: [
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors
-                                            .transparent, // transparent background
-                                        foregroundColor:
-                                            Colors.white, // text/icon color
-                                        side: const BorderSide(
-                                            color: Colors.white,
-                                            width: 2), // white border
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              8), // adjust for rounded corners
-                                        ),
-                                        elevation: 0,
-                                        minimumSize: const Size(
-                                            40, 40), // 👈 ensures square shape
-                                        padding: EdgeInsets
-                                            .zero, // removes extra padding
-                                      ),
+                                    IconButton(
                                       onPressed: () {
                                         showCupertinoDialog(
                                           context: context,
@@ -104,31 +86,13 @@ class AddressCard extends StatelessWidget {
                                           ),
                                         );
                                       },
-                                      child: const Icon(
+                                      icon: Icon(
                                         Icons.delete,
-                                        color: Colors.red,
+                                        color: Colors.white,
                                         size: 25,
                                       ),
                                     ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors
-                                            .transparent, // transparent background
-                                        foregroundColor:
-                                            Colors.white, // text/icon color
-                                        side: const BorderSide(
-                                            color: Colors.white,
-                                            width: 2), // white border
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              8), // adjust for rounded corners
-                                        ),
-                                        elevation: 0,
-                                        minimumSize: const Size(
-                                            40, 40), // 👈 ensures square shape
-                                        padding: EdgeInsets
-                                            .zero, // removes extra padding
-                                      ),
+                                    IconButton(
                                       onPressed: () {
                                         showCupertinoDialog(
                                           context: context,
@@ -145,9 +109,9 @@ class AddressCard extends StatelessWidget {
                                           ),
                                         );
                                       },
-                                      child: const Icon(
+                                      icon: Icon(
                                         Icons.edit,
-                                        color: Colors.blue,
+                                        color: Colors.white,
                                         size: 25,
                                       ),
                                     ),

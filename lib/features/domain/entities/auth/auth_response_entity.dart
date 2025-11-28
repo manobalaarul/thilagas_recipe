@@ -70,14 +70,14 @@ class UserDetails {
   String password;
   @JsonKey(name: "avatar")
   String avatar;
-  @JsonKey(name: "mobile", defaultValue: 0)
-  int? mobile;
+  @JsonKey(name: "mobile")
+  String mobile;
   @JsonKey(name: "refresh_token")
   String refreshToken;
   @JsonKey(name: "verify_email")
   bool verifyEmail;
   @JsonKey(name: "last_login_date")
-  DateTime lastLoginDate;
+  String lastLoginDate;
   @JsonKey(name: "status")
   String status;
   @JsonKey(name: "address_details")

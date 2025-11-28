@@ -57,7 +57,7 @@ class User {
   @JsonKey(name: "verify_email")
   bool verifyEmail;
   @JsonKey(name: "last_login_date")
-  dynamic lastLoginDate;
+  String lastLoginDate;
   @JsonKey(name: "status")
   String status;
   @JsonKey(name: "address_details")

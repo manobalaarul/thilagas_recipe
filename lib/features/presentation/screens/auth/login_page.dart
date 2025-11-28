@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:thilagas_recipe/features/presentation/bloc/login_check_bloc/logincheck_bloc.dart';
+import 'package:thilagas_recipe/features/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:thilagas_recipe/features/presentation/screens/maintab/maintab.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -112,6 +113,9 @@ class _LoginpageState extends State<Loginpage> {
 
                         context.read<CartBloc>().add(GetCartEvent());
                         context.read<WishlistBloc>().add(GetWishlistEvent());
+                        context.read<UserBloc>().add(GetAddressEvent());
+                        context.read<UserBloc>().add(GetOrderEvent());
+                        context.read<UserBloc>().add(FetchUserEvent());
 
                         Get.offAll(() => const MainTab());
                       } else if (state.status == LoginStatus.error) {

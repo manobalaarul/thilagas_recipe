@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thilagas_recipe/features/presentation/screens/wishlist/wishlist_page.dart';
+import 'package:thilagas_recipe/features/presentation/utils/check_update.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../bloc/login_check_bloc/logincheck_bloc.dart';
@@ -30,7 +31,7 @@ class _MainTabState extends State<MainTab> {
   @override
   void initState() {
     super.initState();
-
+    UpdateChecker.checkForUpdate(context);
     // Dispatch event to check token
     context.read<LogincheckBloc>().add(CheckAuthStatus());
   }

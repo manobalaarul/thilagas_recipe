@@ -40,10 +40,10 @@ UserDetails _$UserDetailsFromJson(Map<String, dynamic> json) => UserDetails(
       email: json['email'] as String,
       password: json['password'] as String,
       avatar: json['avatar'] as String,
-      mobile: (json['mobile'] as num).toInt(),
+      mobile: json['mobile'] as String,
       refreshToken: json['refresh_token'] as String,
       verifyEmail: json['verify_email'] as bool,
-      lastLoginDate: DateTime.parse(json['last_login_date'] as String),
+      lastLoginDate: json['last_login_date'] as String,
       status: json['status'] as String,
       addressDetails: (json['address_details'] as List<dynamic>)
           .map((e) => e as String)
@@ -71,7 +71,7 @@ Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
       'mobile': instance.mobile,
       'refresh_token': instance.refreshToken,
       'verify_email': instance.verifyEmail,
-      'last_login_date': instance.lastLoginDate.toIso8601String(),
+      'last_login_date': instance.lastLoginDate,
       'status': instance.status,
       'address_details': instance.addressDetails,
       'shopping_cart': instance.shoppingCart,

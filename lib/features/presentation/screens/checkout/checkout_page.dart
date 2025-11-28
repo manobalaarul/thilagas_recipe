@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:thilagas_recipe/features/presentation/screens/profile/address/my_address.dart';
 import 'package:thilagas_recipe/features/presentation/utils/calculate_totalkg.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -363,7 +365,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                               style: TextStyle(fontSize: 17)),
                                           // 🔑 Show loading or delivery charge with proper null handling
                                           isDeliveryChargeLoading
-                                              ? const Text("Select Address")
+                                              ? TextButton(
+                                                  onPressed: () {
+                                                    Get.to(MyAddress(
+                                                        title:
+                                                            "Select Address"));
+                                                  },
+                                                  child: Text("Select Address"))
                                               : hasSelectedAddress
                                                   ? Text(
                                                       displayPriceInRupees(

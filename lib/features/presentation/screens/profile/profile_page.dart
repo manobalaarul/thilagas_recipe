@@ -123,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Developed by © '),
+                            Text('Developed by © Growsoon Infotech'),
                             // Text(
                             //   // globalController.companyDetails.value!.name,
                             //   // style: TextStyle(color: AppLightColor.primary),
