@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../core/theme/bloc/theme_bloc.dart';
+import 'package:thilagas_recipe/features/common_widgets/appbar/light_dark_wid.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -55,16 +53,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               SizedBox(
                 width: media.width / 20,
               ),
-              InkWell(
-                child: Icon(
-                  context.read<ThemeBloc>().state.themeMode == ThemeMode.dark
-                      ? Icons.dark_mode
-                      : Icons.light_mode,
-                ),
-                onTap: () {
-                  context.read<ThemeBloc>().add(ToggleThemeEvent());
-                },
-              ),
+              LightDarkWid()
             ],
           ),
         ],
