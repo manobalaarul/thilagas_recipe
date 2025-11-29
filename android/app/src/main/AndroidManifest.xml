@@ -6,10 +6,7 @@
         android:label="Thilagas Recipe"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-<<<<<<< HEAD
-=======
         android:roundIcon="@mipmap/ic_launcher_round"
->>>>>>> 56bc685f3d0dc8f64f57a680a448e50ea57f2209
         android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"
